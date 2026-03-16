@@ -17,6 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+GlobalSave="*uid://ci153lpm0g5s8"
 GlobalLogger="*uid://c2bb678qy6b8k"
 
 [display]

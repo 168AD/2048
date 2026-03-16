@@ -3,8 +3,13 @@
 [ext_resource type="Script" uid="uid://bl6pvt14smte" path="res://scripts/manager/game_manager.gd" id="1_hh5cm"]
 [ext_resource type="PackedScene" uid="uid://ciq5x71kcgfg6" path="res://view/board_view.tscn" id="2_gatuf"]
 [ext_resource type="PackedScene" uid="uid://cyt4cbd31faw7" path="res://manager/board_manager.tscn" id="3_m8kxl"]
+[ext_resource type="Script" uid="uid://dpqhm8jkfyhf4" path="res://scripts/resource/board_res.gd" id="4_bw0ch"]
 [ext_resource type="PackedScene" uid="uid://c1odj85xmn7bg" path="res://manager/input_manager.tscn" id="4_m8kxl"]
 [ext_resource type="PackedScene" uid="uid://b6byxtfr81cti" path="res://ui/score.tscn" id="5_jsypt"]
+
+[sub_resource type="Resource" id="Resource_bw0ch"]
+script = ExtResource("4_bw0ch")
+metadata/_custom_type_script = "uid://dpqhm8jkfyhf4"
 
 [node name="GameManager" type="Node2D" unique_id=1857468407]
 script = ExtResource("1_hh5cm")
@@ -12,6 +17,7 @@ script = ExtResource("1_hh5cm")
 [node name="BoardView" parent="." unique_id=388317679 instance=ExtResource("2_gatuf")]
 
 [node name="BoardManager" parent="." unique_id=1515708366 instance=ExtResource("3_m8kxl")]
+board_res = SubResource("Resource_bw0ch")
 
 [node name="InputManager" parent="." unique_id=503755794 instance=ExtResource("4_m8kxl")]
 

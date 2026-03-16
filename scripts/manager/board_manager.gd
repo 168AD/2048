@@ -1,10 +1,11 @@
-extends Node2D
+extends Persist
 class_name BoardManager
 
 signal board_updated
 signal merge_happened
 signal game_over
 
+@export var board_res: BoardRes
 @export var board = []
 @export var board_history = []
 @export var board_future = {}
@@ -13,8 +14,37 @@ var row = 4
 var column = 4
 
 func _ready() -> void:
-	board = _create_space_array()
-	_add_entry_to_grid(2)
+	var load_resource = GlobalSave.get_from_manager(self.get_path()) as BoardRes
+	if load_resource:
+		board_res = load_resource
+		_load(board_res)
+		GlobalLogger.info("读取棋盘存档", "读档")
+	else:
+		board = _create_space_array()
+		_add_entry_to_grid(2)
+
+#region 存读档
+func _save() -> Resource:
+	board_res.board = board.duplicate(true)
+	board_res.board_future = board_future.duplicate(true)
+	board_res.board_history = board_history.duplicate(true)
+	board_res.add_entry_future = add_entry_future.duplicate(true)
+	return board_res
+	
+func _load(_res: Resource) -> bool:
+	if _res is BoardRes:
+		if _res.board.is_empty():
+			return false
+		
+		board = _res.board.duplicate(true)
+		board_future = _res.board_future.duplicate(true)
+		board_history = _res.board_history.duplicate(true)
+		add_entry_future = _res.add_entry_future.duplicate(true)
+		return true
+	else:
+		GlobalLogger.warning("棋盘资源加载错误", "存档系统")
+		return false
+#endregion
 
 #region 外部调用
 func get_empty_entry() -> int:
