@@ -9,6 +9,8 @@ func _enter_tree() -> void:
 
 func _exit_tree() -> void:
 	var resource = _save()
+	if resource == null:
+		return
 	GlobalSave.save_to_manager(self.get_path(), resource)
 
 func _save() -> Resource:

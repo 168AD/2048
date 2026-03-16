@@ -4,6 +4,7 @@ class_name SaveManager
 const SAVE_DIR: String = "user://save"
 const SAVE_FILE_PATH: String = "user://save/sav.tres"
 const SAVE_BACKUP_PATH: String = "user://save/sav_backup.tres"
+const SAVE_TEMP_PATH: String = "user://save/sav_temp.tres"
 
 @export var save_resource: SaveRes
 @export var version: String = "0.0"
@@ -21,32 +22,6 @@ func _exit_tree() -> void:
 
 #region 存档
 func _save() -> void:
-	var rename_times = 0
-	while rename_times < 3:
-		var result = _rename_old_save()
-		if result:
-			break
-			
-		rename_times += 1
-	
-	if rename_times == 3:
-		return
-	
-	_save_to_local()
-	
-func save_to_manager(path: String, res: Resource) -> void:
-	save_resource.save_dict[path] = res
-
-func _rename_old_save() -> bool:
-	if FileAccess.file_exists(SAVE_FILE_PATH):
-		var err = DirAccess.rename_absolute(SAVE_FILE_PATH, SAVE_BACKUP_PATH)
-		if err != OK:
-			GlobalLogger.warning("旧存档重命名失败", "存档")
-			return false
-	
-	return true
-	
-func _save_to_local() -> bool:
 	var data_dict = save_resource.save_dict
 	for node in get_tree().get_nodes_in_group("Persist"):
 		if not node.has_method("_save"):
@@ -62,17 +37,32 @@ func _save_to_local() -> bool:
 	save_resource.time_tamp = Time.get_date_string_from_system()
 	save_resource.version = version
 	
-	var result = ResourceSaver.save(save_resource, SAVE_FILE_PATH)
+	var result = ResourceSaver.save(save_resource, SAVE_TEMP_PATH)
 	if result == OK:
-		GlobalLogger.info("存档保存成功", "存档")
-		return true
+		GlobalLogger.info("临时存档保存成功", "存档")
 	else:
-		if FileAccess.file_exists(SAVE_BACKUP_PATH):
-			DirAccess.rename_absolute(SAVE_BACKUP_PATH, SAVE_FILE_PATH)
-			
-		GlobalLogger.error("存档保存失败！", "存档")
-		push_error("存档保存失败！", result)
-		return false
+		GlobalLogger.error("临时存档保存失败！", "存档")
+		push_error("临时存档保存失败！", result)
+	
+	if FileAccess.file_exists(SAVE_BACKUP_PATH):
+		var err = DirAccess.remove_absolute(SAVE_BACKUP_PATH)
+		if err != OK:
+			GlobalLogger.warning("删除旧备份失败，可能影响存档轮替", "存档")
+	
+	if FileAccess.file_exists(SAVE_FILE_PATH):
+		var err = DirAccess.rename_absolute(SAVE_FILE_PATH, SAVE_BACKUP_PATH)
+		if err != OK:
+			GlobalLogger.warning("重命名旧存档为备份存档失败", "存档")
+	
+	var rename_err = DirAccess.rename_absolute(SAVE_TEMP_PATH, SAVE_FILE_PATH)
+	if rename_err != OK:
+		GlobalLogger.error("临时存档重命名失败，存档可能丢失", "存档")
+		return
+	
+	GlobalLogger.info("存档成功", "存档")
+	
+func save_to_manager(path: String, res: Resource) -> void:
+	save_resource.save_dict[path] = res
 #endregion
 
 func _load() -> void:
