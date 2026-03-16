@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cyt4cbd31faw7"]
+
+[ext_resource type="Script" uid="uid://dyak38dq0820r" path="res://scripts/manager/board_manager.gd" id="1_2quq4"]
+
+[node name="BoardManager" type="Node2D" unique_id=1515708366]
+script = ExtResource("1_2quq4")

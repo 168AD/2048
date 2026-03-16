@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://b6byxtfr81cti"]
+
+[ext_resource type="Script" uid="uid://cthsu0rk51pb5" path="res://scripts/ui/score.gd" id="1_7b0px"]
+
+[node name="Score" type="Control" unique_id=1416395068]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_7b0px")
+
+[node name="Container" type="HBoxContainer" parent="." unique_id=731169464]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Text" type="Label" parent="Container" unique_id=1644626347]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "分数："
+
+[node name="ScoreDisplay" type="Label" parent="Container" unique_id=1577358121]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "0"

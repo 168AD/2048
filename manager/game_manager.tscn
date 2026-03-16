@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://knt67r48y6q1"]
+
+[ext_resource type="Script" uid="uid://bl6pvt14smte" path="res://scripts/manager/game_manager.gd" id="1_hh5cm"]
+[ext_resource type="PackedScene" uid="uid://ciq5x71kcgfg6" path="res://view/board_view.tscn" id="2_gatuf"]
+[ext_resource type="PackedScene" uid="uid://cyt4cbd31faw7" path="res://manager/board_manager.tscn" id="3_m8kxl"]
+[ext_resource type="PackedScene" uid="uid://c1odj85xmn7bg" path="res://manager/input_manager.tscn" id="4_m8kxl"]
+[ext_resource type="PackedScene" uid="uid://b6byxtfr81cti" path="res://ui/score.tscn" id="5_jsypt"]
+
+[node name="GameManager" type="Node2D" unique_id=1857468407]
+script = ExtResource("1_hh5cm")
+
+[node name="BoardView" parent="." unique_id=388317679 instance=ExtResource("2_gatuf")]
+
+[node name="BoardManager" parent="." unique_id=1515708366 instance=ExtResource("3_m8kxl")]
+
+[node name="InputManager" parent="." unique_id=503755794 instance=ExtResource("4_m8kxl")]
+
+[node name="Score" parent="." unique_id=1416395068 instance=ExtResource("5_jsypt")]
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 51.0
+offset_top = 73.0
+offset_right = 51.0
+offset_bottom = 73.0
+grow_horizontal = 1
+grow_vertical = 1
+size_flags_horizontal = 0
+
+[node name="NewGame" type="Button" parent="." unique_id=855985272]
+offset_left = 15.0
+offset_top = 148.0
+offset_right = 203.0
+offset_bottom = 195.0
+theme_override_font_sizes/font_size = 36
+text = "新游戏"
