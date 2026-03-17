@@ -21,21 +21,19 @@ func save_data() -> Resource:
 	board_res.add_entry_future = add_entry_future.duplicate(true)
 	return board_res
 	
-func load_data(_res: Resource) -> bool:
+func load_data(_res: Resource) -> void:
 	if _res is BoardRes:
 		if _res.board.is_empty():
-			return false
+			return
 		
 		board = _res.board.duplicate(true)
 		board_future = _res.board_future.duplicate(true)
 		board_history = _res.board_history.duplicate(true)
 		add_entry_future = _res.add_entry_future.duplicate(true)
-		return true
 	else:
 		GlobalLogger.warning("无相应棋盘资源", "存档")
 		board = _create_space_array()
 		_add_entry_to_grid(2)
-		return false
 #endregion
 
 #region 外部调用

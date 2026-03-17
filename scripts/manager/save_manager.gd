@@ -94,7 +94,7 @@ func load_data() -> void:
 		
 	var saved_data = ResourceLoader.load(SAVE_PATH) as SaveRes
 	if saved_data:
-		save_resource = saved_data
+		save_resource = _version_merge(saved_data)
 	else:
 		GlobalLogger.error("读档失败！", "读档")
 
@@ -104,3 +104,13 @@ func get_from_manager(path: String) -> Resource:
 	else:
 		GlobalLogger.warning("未查询到" + path + "请求的数据", "存档")
 		return null
+
+func _version_merge(resource: SaveRes) -> SaveRes:
+	var ver = resource.version
+	if ver != version:
+		match ver:
+			"0.0":
+				pass
+				
+	return resource
+	

@@ -1,21 +1,27 @@
 [gd_scene format=3 uid="uid://b6byxtfr81cti"]
 
 [ext_resource type="Script" uid="uid://cthsu0rk51pb5" path="res://scripts/ui/score.gd" id="1_7b0px"]
+[ext_resource type="Script" uid="uid://bj5tgove46sjj" path="res://scripts/resource/score_res.gd" id="2_phtbq"]
+
+[sub_resource type="Resource" id="Resource_phtbq"]
+script = ExtResource("2_phtbq")
+metadata/_custom_type_script = "uid://bj5tgove46sjj"
 
 [node name="Score" type="Node2D" unique_id=448192639]
 script = ExtResource("1_7b0px")
+score_res = SubResource("Resource_phtbq")
 metadata/_custom_type_script = "uid://c6kcuba4rdprq"
 
-[node name="Container" type="HBoxContainer" parent="." unique_id=731169464]
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="Text" type="Label" parent="Container" unique_id=1644626347]
-layout_mode = 2
-theme_override_font_sizes/font_size = 36
-text = "分数："
+[node name="Container" type="VBoxContainer" parent="." unique_id=1747697053]
+offset_right = 158.0
+offset_bottom = 158.0
 
 [node name="ScoreDisplay" type="Label" parent="Container" unique_id=1577358121]
 layout_mode = 2
 theme_override_font_sizes/font_size = 36
-text = "0"
+text = "分数：0"
+
+[node name="HighestDisplay" type="Label" parent="Container" unique_id=1240244964]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "最高分：0"

@@ -18,5 +18,5 @@ func _exit_tree() -> void:
 func save_data() -> Resource:
 	return null
 	
-func load_data(_res: Resource) -> bool:
-	return true
+func load_data(_res: Resource) -> void:
+	return
