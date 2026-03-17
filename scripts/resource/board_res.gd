@@ -13,6 +13,72 @@ signal game_over
 var row = 4
 var column = 4
 
+func new_game():
+	for i in row:
+		for j in column:
+			board[i][j] = 0
+	
+	board_history = []
+	board_future = {}
+	add_entry_future = {}
+	_add_entry_to_grid(2)
+	GlobalLogger.info("新游戏开始")
+
+func load_initial():
+	if board.is_empty():
+		board = _create_space_array()
+		_add_entry_to_grid(2)
+	board_updated.emit(board)
+
+func undo():
+	if not board_history:
+		return
+	board = board_history.duplicate(true)
+	board_updated.emit(board)
+
+func move(direction: String):
+	var pre_board_history = board.duplicate(true)
+	#for i in row:
+		#print(board_history[i])
+	#print("-----------------")
+	var result
+	match direction:
+		"left":
+			result = _move_left()
+			
+		"right":
+			result = _move_right()
+		
+		"up":
+			result = _move_up()
+		
+		"down":
+			result = _move_down()
+	
+	if not result:
+		return
+	
+	board_history = pre_board_history.duplicate(true)
+	if direction in board_future and\
+	board_future[direction] == board:
+		var add_result = add_entry_future[direction]
+		var old_x = add_result[0]
+		var old_y = add_result[1]
+		var value = add_result[2]
+		board[old_x][old_y] = value
+		board_updated.emit(board)
+	else:
+		if direction in board_future:
+			board_future.clear()
+			add_entry_future.clear()
+		
+		board_future[direction] = board.duplicate(true)
+		var add_result = _add_entry_to_grid(1)
+		add_entry_future[direction] = add_result.duplicate(true)
+		
+	if _game_is_over():
+		game_over.emit()
+
 func get_empty_entry() -> int:
 	var res = 0
 	for i in row:
@@ -22,7 +88,7 @@ func get_empty_entry() -> int:
 	
 	return res
 
-func game_is_over() -> bool:
+func _game_is_over() -> bool:
 	if get_empty_entry() > 0:
 		return false
 		
@@ -36,7 +102,7 @@ func game_is_over() -> bool:
 	
 	return true
 
-func create_space_array() -> Array:
+func _create_space_array() -> Array:
 	var array = []
 	for i in row:
 		array.append([])
@@ -45,7 +111,7 @@ func create_space_array() -> Array:
 			
 	return array
 
-func add_entry_to_grid(number: int) -> Array:
+func _add_entry_to_grid(number: int) -> Array:
 	var added_number := 0
 	var result
 	while added_number < number and get_empty_entry() > 0:
@@ -62,7 +128,7 @@ func add_entry_to_grid(number: int) -> Array:
 	return result
 
 #region 移动方法
-func move_left() -> bool:
+func _move_left() -> bool:
 	var moved_or_merged = false
 	var merged = false
 	for i in row:
@@ -89,7 +155,7 @@ func move_left() -> bool:
 	
 	return moved_or_merged
 
-func move_right() -> bool:
+func _move_right() -> bool:
 	var moved_or_merged = false
 	var merged = false
 	for i in row:
@@ -116,7 +182,7 @@ func move_right() -> bool:
 	
 	return moved_or_merged
 
-func move_up() -> bool:
+func _move_up() -> bool:
 	var moved_or_merged = false
 	var merged = false
 	for j in column:
@@ -144,7 +210,7 @@ func move_up() -> bool:
 	
 	return moved_or_merged
 
-func move_down() -> bool:
+func _move_down() -> bool:
 	var moved_or_merged = false
 	var merged = false
 	for j in column:
