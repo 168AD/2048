@@ -28,7 +28,7 @@ func game_over():
 	GlobalLogger.info("游戏结束")
 
 func _on_move_requested(direction: String):
-	score.save()
+	score.save_history()
 	board_manager.move(direction)
 	
 func _on_undo_requested():

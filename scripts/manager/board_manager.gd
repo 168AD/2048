@@ -13,25 +13,15 @@ signal game_over
 var row = 4
 var column = 4
 
-func _ready() -> void:
-	var load_resource = GlobalSave.get_from_manager(self.get_path()) as BoardRes
-	if load_resource:
-		board_res = load_resource
-		_load(board_res)
-		GlobalLogger.info("读取棋盘存档", "读档")
-	else:
-		board = _create_space_array()
-		_add_entry_to_grid(2)
-
 #region 存读档
-func _save() -> Resource:
+func save_data() -> Resource:
 	board_res.board = board.duplicate(true)
 	board_res.board_future = board_future.duplicate(true)
 	board_res.board_history = board_history.duplicate(true)
 	board_res.add_entry_future = add_entry_future.duplicate(true)
 	return board_res
 	
-func _load(_res: Resource) -> bool:
+func load_data(_res: Resource) -> bool:
 	if _res is BoardRes:
 		if _res.board.is_empty():
 			return false
@@ -42,7 +32,9 @@ func _load(_res: Resource) -> bool:
 		add_entry_future = _res.add_entry_future.duplicate(true)
 		return true
 	else:
-		GlobalLogger.warning("棋盘资源加载错误", "存档系统")
+		GlobalLogger.warning("无相应棋盘资源", "存档")
+		board = _create_space_array()
+		_add_entry_to_grid(2)
 		return false
 #endregion
 

@@ -22,16 +22,6 @@ board_res = SubResource("Resource_bw0ch")
 [node name="InputManager" parent="." unique_id=503755794 instance=ExtResource("4_m8kxl")]
 
 [node name="Score" parent="." unique_id=1416395068 instance=ExtResource("5_jsypt")]
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 51.0
-offset_top = 73.0
-offset_right = 51.0
-offset_bottom = 73.0
-grow_horizontal = 1
-grow_vertical = 1
-size_flags_horizontal = 0
 
 [node name="NewGame" type="Button" parent="." unique_id=855985272]
 offset_left = 15.0

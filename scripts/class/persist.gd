@@ -5,16 +5,18 @@ class_name Persist
 
 func _enter_tree() -> void:
 	add_to_group("Persist")
-	GlobalLogger.info("持久化节点" + self.name + "已加载", "存档")
+	GlobalLogger.debug("持久化节点" + self.name + "已加载", "存档")
+	await self.ready
+	load_data(GlobalSave.get_from_manager(self.get_path()))
 
 func _exit_tree() -> void:
-	var resource = _save()
+	var resource = save_data()
 	if resource == null:
 		return
 	GlobalSave.save_to_manager(self.get_path(), resource)
 
-func _save() -> Resource:
+func save_data() -> Resource:
 	return null
 	
-func _load(_res: Resource) -> bool:
+func load_data(_res: Resource) -> bool:
 	return true

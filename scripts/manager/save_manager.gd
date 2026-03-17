@@ -1,77 +1,100 @@
 extends Node2D
 class_name SaveManager
 
-const SAVE_DIR: String = "user://save"
-const SAVE_FILE_PATH: String = "user://save/sav.tres"
-const SAVE_BACKUP_PATH: String = "user://save/sav_backup.tres"
-const SAVE_TEMP_PATH: String = "user://save/sav_temp.tres"
+# signal slot_changes
 
 @export var save_resource: SaveRes
 @export var version: String = "0.0"
+@export var slot: int = 1
+
+var SAVE_PATH: String = "user://sav%d.tres" % slot
+var TEMP_PATH: String = "user://sav%d.tmp.tres" % slot
+var BACKUP_PATH: String = "user://sav%d.bak.tres" % slot
 
 func _ready() -> void:
-	if not DirAccess.dir_exists_absolute(SAVE_DIR):
-		var err = DirAccess.make_dir_absolute(SAVE_DIR)
-		if err != OK:
-			GlobalLogger.warning("存档目录创建失败", "存档")
-			
-	_load()
+	load_data()
 
 func _exit_tree() -> void:
-	_save()
+	save_data()
 
 #region 存档
-func _save() -> void:
+func save_data() -> void:
+	# 1.保存当前数据
 	var data_dict = save_resource.save_dict
 	for node in get_tree().get_nodes_in_group("Persist"):
-		if not node.has_method("_save"):
-			GlobalLogger.warning("节点" + node.name + "误入Persist组", "存档")
+		if not node.has_method("save_data"):
+			GlobalLogger.warning("节点 %s 误入Persist组" % node.name, "存档")
 			continue
 			
-		var data = node._save()
+		var data = node.save_data()
 		if data:
 			data_dict[node.get_path()] = data
 		else:
-			GlobalLogger.warning("节点" + node.name + "返回空存档数据", "存档")
+			GlobalLogger.warning("节点 %s 返回空存档数据" % node.name, "存档")
 			
 	save_resource.time_tamp = Time.get_date_string_from_system()
 	save_resource.version = version
-	
-	var result = ResourceSaver.save(save_resource, SAVE_TEMP_PATH)
-	if result == OK:
-		GlobalLogger.info("临时存档保存成功", "存档")
+
+	# 2.新建临时存档
+	var temp_err = ResourceSaver.save(save_resource, TEMP_PATH)
+	if temp_err == OK:
+		GlobalLogger.debug("临时存档保存成功", "存档")
 	else:
-		GlobalLogger.error("临时存档保存失败！", "存档")
-		push_error("临时存档保存失败！", result)
-	
-	if FileAccess.file_exists(SAVE_BACKUP_PATH):
-		var err = DirAccess.remove_absolute(SAVE_BACKUP_PATH)
-		if err != OK:
-			GlobalLogger.warning("删除旧备份失败，可能影响存档轮替", "存档")
-	
-	if FileAccess.file_exists(SAVE_FILE_PATH):
-		var err = DirAccess.rename_absolute(SAVE_FILE_PATH, SAVE_BACKUP_PATH)
-		if err != OK:
-			GlobalLogger.warning("重命名旧存档为备份存档失败", "存档")
-	
-	var rename_err = DirAccess.rename_absolute(SAVE_TEMP_PATH, SAVE_FILE_PATH)
-	if rename_err != OK:
-		GlobalLogger.error("临时存档重命名失败，存档可能丢失", "存档")
+		GlobalLogger.error("临时存档保存失败！错误码： %d" % temp_err , "存档")
+		push_error("临时存档保存失败，存档中止！", temp_err)
 		return
+
+	# 3.删除旧备份存档
+	if FileAccess.file_exists(BACKUP_PATH):
+		var del_err = DirAccess.remove_absolute(BACKUP_PATH)
+		if del_err == OK:
+			GlobalLogger.debug("删除旧备份成功", "存档")
+		else:
+			GlobalLogger.warning("删除旧备份失败，错误码：%d" % del_err, "存档")
 	
-	GlobalLogger.info("存档成功", "存档")
+	# 4.重命名旧存档
+	if FileAccess.file_exists(SAVE_PATH):
+		var rename_err = DirAccess.rename_absolute(SAVE_PATH, BACKUP_PATH)
+		if rename_err == OK:
+			GlobalLogger.debug("重命名旧存档为备份存档成功", "存档")
+		else:
+			GlobalLogger.warning("重命名旧存档为备份存档失败，存档取消！错误码 %d" % rename_err, "存档")
+			return
+
+	# 5.重命名临时存档
+	var result = DirAccess.rename_absolute(TEMP_PATH, SAVE_PATH)
+	if result == OK:
+		GlobalLogger.debug("临时存档重命名成功", "存档")
+		GlobalLogger.info("存档成功", "存档")
+	else:
+		GlobalLogger.error("临时存档重命名失败，存档可能丢失，错误码： %d" % result, "存档")
+		if not FileAccess.file_exists(BACKUP_PATH):
+			GlobalLogger.error("备份存档丢失，无法恢复！", "存档")
+			push_error("备份存档丢失，无法恢复！")
+			return
+
+		var err = DirAccess.rename_absolute(BACKUP_PATH, SAVE_PATH)
+		if err != OK:
+			GlobalLogger.error("恢复备份失败，存档可能丢失！", "存档")
+			push_error("恢复备份存档失败")
+			return
+		else:
+			GlobalLogger.info("已从备份恢复存档", "存档")
+			if FileAccess.file_exists(TEMP_PATH):
+				DirAccess.remove_absolute(TEMP_PATH)
 	
 func save_to_manager(path: String, res: Resource) -> void:
 	save_resource.save_dict[path] = res
+		
 #endregion
 
-func _load() -> void:
-	if not ResourceLoader.exists(SAVE_FILE_PATH):
+func load_data() -> void:
+	if not ResourceLoader.exists(SAVE_PATH):
 		return 
 		
-	var save_data = ResourceLoader.load(SAVE_FILE_PATH) as SaveRes
-	if save_data:
-		save_resource = save_data
+	var saved_data = ResourceLoader.load(SAVE_PATH) as SaveRes
+	if saved_data:
+		save_resource = saved_data
 	else:
 		GlobalLogger.error("读档失败！", "读档")
 
