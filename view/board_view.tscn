@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ciq5x71kcgfg6"]
 
-[ext_resource type="Script" uid="uid://b1wy226y7wdkb" path="res://scripts/view/board_view.gd" id="1_jcgq1"]
+[ext_resource type="Script" uid="uid://b1wy226y7wdkb" path="res://view/board_view.gd" id="1_jcgq1"]
 [ext_resource type="PackedScene" uid="uid://ddaukc3rma5ry" path="res://scenes/entry.tscn" id="2_e7v5y"]
 
 [node name="BoardView" type="Node2D" unique_id=388317679]

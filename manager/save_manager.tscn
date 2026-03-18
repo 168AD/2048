@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ci153lpm0g5s8"]
 
-[ext_resource type="Script" uid="uid://ukbjdkj7s2c7" path="res://scripts/manager/save_manager.gd" id="1_an3ew"]
+[ext_resource type="Script" uid="uid://ukbjdkj7s2c7" path="res://manager/save_manager.gd" id="1_an3ew"]
 [ext_resource type="Script" uid="uid://b1d35pmd8uk2x" path="res://scripts/resource/save_res.gd" id="2_j7o5n"]
 
 [sub_resource type="Resource" id="Resource_gjbx1"]
@@ -13,7 +13,7 @@ save_resource = SubResource("Resource_gjbx1")
 slot = 2
 
 [node name="AutoSave" type="Timer" parent="." unique_id=1476359859]
-wait_time = 30.0
+wait_time = 300.0
 autostart = true
 
 [connection signal="timeout" from="AutoSave" to="." method="save_data"]

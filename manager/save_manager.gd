@@ -22,11 +22,11 @@ func save_data() -> void:
 	# 1.保存当前数据
 	var data_dict = save_resource.save_dict
 	for node in get_tree().get_nodes_in_group("Persist"):
-		if not node.has_method("save_data"):
+		if not node.has_method("save_res"):
 			GlobalLogger.warning("节点 %s 误入Persist组" % node.name, "存档")
 			continue
 			
-		var data = node.save_data()
+		var data = node.save_res()
 		if data:
 			data_dict[node.get_path()] = data
 		else:
