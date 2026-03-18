@@ -1,4 +1,4 @@
-extends Resource
+extends GameRes
 class_name ScoreRes
 
 @export var score: int

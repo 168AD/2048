@@ -8,15 +8,16 @@ extends Persist
 @export var board_res: BoardRes
 
 #region 存读档
-func save_data() -> Resource:
+func save_res() -> GameRes:
 	return board_res
 	
-func load_data(_res: Resource) -> void:
+func load_res(_res: GameRes) -> void:
 	if _res is BoardRes:
 		board_res = _res
 	else:
 		GlobalLogger.warning("无相应棋盘资源", "存档")
 		board_res = BoardRes.new()
+		board_res.new_game()
 	
 	_connect_signals()
 	board_res.load_initial()

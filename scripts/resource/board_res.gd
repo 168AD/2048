@@ -1,4 +1,4 @@
-extends Resource
+extends GameRes
 class_name BoardRes
 
 signal board_updated
@@ -14,10 +14,7 @@ var row = 4
 var column = 4
 
 func new_game():
-	for i in row:
-		for j in column:
-			board[i][j] = 0
-	
+	board = _create_space_array()
 	board_history = []
 	board_future = {}
 	add_entry_future = {}

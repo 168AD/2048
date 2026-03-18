@@ -5,19 +5,20 @@ class_name Score
 @onready var score_display: Label = $Container/ScoreDisplay
 @onready var highest_display: Label = $Container/HighestDisplay
 
-func save_data() -> Resource:
+func save_res() -> GameRes:
 	return score_res
-
-func load_data(_res: Resource) -> void:
+	
+func load_res(_res: GameRes) -> void:
 	if _res is ScoreRes:
 		score_res = _res
 	else:
-		GlobalLogger.warning("无相应分数资源", "存档")
+		GlobalLogger.warning("无%s所请求的资源" % self.name, "存档")
 		score_res = ScoreRes.new()
-		
+		score_res.new_game()
+	
 	_connect_signals()
 	score_res.load_initial()
-		
+
 func score_display_updated(x: int) -> void:
 	score_display.text = "分数：%d" % x
 	
