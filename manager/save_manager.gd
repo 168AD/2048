@@ -5,7 +5,12 @@ class_name SaveManager
 
 @export var save_resource: SaveRes
 @export var version: String = "0.1"
-@export var slot: int = 1
+@export var slot: int = 1:
+	set(n):
+		slot = n
+		SAVE_PATH = "user://sav%d.tres" % slot
+		TEMP_PATH = "user://sav%d.tmp.tres" % slot
+		BACKUP_PATH = "user://sav%d.bak.tres" % slot
 
 var SAVE_PATH: String = "user://sav%d.tres" % slot
 var TEMP_PATH: String = "user://sav%d.tmp.tres" % slot
