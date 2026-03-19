@@ -10,7 +10,6 @@ metadata/_custom_type_script = "uid://b1d35pmd8uk2x"
 [node name="SaveManager" type="Node2D" unique_id=1835664893]
 script = ExtResource("1_an3ew")
 save_resource = SubResource("Resource_gjbx1")
-slot = 2
 
 [node name="AutoSave" type="Timer" parent="." unique_id=1476359859]
 wait_time = 300.0

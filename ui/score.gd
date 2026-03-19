@@ -20,10 +20,10 @@ func load_res(_res: GameRes) -> void:
 	score_res.load_initial()
 
 func score_display_updated(x: int) -> void:
-	score_display.text = "分数：%d" % x
+	score_display.text = tr("Score") + "：%d" % x
 	
 func highest_display_updated(x: int) -> void:
-	highest_display.text = "最高分：%d" % x
+	highest_display.text = tr("Highest") + "：%d" % x
 
 func score_update(x: int):
 	score_res.score_update(x)
@@ -42,3 +42,6 @@ func _connect_signals():
 		score_res.score_updated.connect(score_display_updated)
 	if not score_res.highest_updated.is_connected(highest_display_updated):
 		score_res.highest_updated.connect(highest_display_updated)
+
+func language_update():
+	score_res.load_initial()

@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://ciq5x71kcgfg6" path="res://view/board_view.tscn" id="2_fv4ni"]
 [ext_resource type="PackedScene" uid="uid://c1odj85xmn7bg" path="res://manager/input_manager.tscn" id="3_dxjtj"]
 [ext_resource type="PackedScene" uid="uid://b6byxtfr81cti" path="res://ui/score.tscn" id="4_dun80"]
+[ext_resource type="Script" uid="uid://cpjjlyd1yy1lf" path="res://scripts/localization.gd" id="6_dun80"]
 
 [sub_resource type="Resource" id="Resource_dun80"]
 script = ExtResource("2_dxjtj")
@@ -27,4 +28,15 @@ offset_top = 148.0
 offset_right = 203.0
 offset_bottom = 195.0
 theme_override_font_sizes/font_size = 36
-text = "新游戏"
+text = "NewGame"
+
+[node name="Localization" type="Button" parent="." unique_id=365967187]
+offset_left = 16.0
+offset_top = 234.0
+offset_right = 204.0
+offset_bottom = 292.0
+theme_override_font_sizes/font_size = 36
+text = "Language"
+script = ExtResource("6_dun80")
+
+[connection signal="pressed" from="Localization" to="Localization" method="_on_pressed"]

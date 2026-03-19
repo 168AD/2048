@@ -4,6 +4,7 @@ extends Persist
 @onready var input_manager: InputManager = $InputManager
 @onready var score: Score = $Score
 @onready var new_game: Button = $NewGame
+@onready var localization: Button = $Localization
 
 @export var board_res: BoardRes
 
@@ -47,5 +48,7 @@ func _connect_signals():
 	
 	new_game.pressed.connect(board_res.new_game)
 	new_game.pressed.connect(score.new_game)
+	
+	localization.language_update.connect(score.language_update)
 	
 	GlobalLogger.info("---游戏启动---")
