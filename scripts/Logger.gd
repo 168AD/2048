@@ -46,6 +46,7 @@ func _ready():
 	
 	if not _file:
 		push_error("无法创建日志文件，错误代码：", FileAccess.get_open_error())
+		save_to_file = false
 		
 func _exit_tree():
 	if _file and _file.is_open():

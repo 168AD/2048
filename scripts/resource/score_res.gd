@@ -5,7 +5,7 @@ class_name ScoreRes
 @export var history: int
 @export var highest: int
 
-signal score_updated(new_socre: int)
+signal score_updated(new_score: int)
 signal highest_updated(new_highest: int)
 
 func score_update(x: int):

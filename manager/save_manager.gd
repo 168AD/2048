@@ -4,7 +4,7 @@ class_name SaveManager
 # signal slot_changes
 
 @export var save_resource: SaveRes
-@export var version: String = "0.0"
+@export var version: String = "0.1"
 @export var slot: int = 1
 
 var SAVE_PATH: String = "user://sav%d.tres" % slot
@@ -110,7 +110,11 @@ func _version_migrate(resource: SaveRes) -> SaveRes:
 	if ver != version:
 		match ver:
 			"0.0":
-				pass
+				resource.save_dict.erase("/root/GameManager/Score")
+				resource.save_dict.erase("/root/GameManager/BoardManager")
+				resource.save_dict.erase("/root/Score")
+				resource.version = "0.1"
+				resource = _version_migrate(resource)
 				
 	return resource
 	
