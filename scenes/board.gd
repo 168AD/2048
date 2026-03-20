@@ -44,8 +44,8 @@ func _connect_signals():
 		board_res.board_updated.connect(board_view.update_grid)
 	if not board_res.board_moved.is_connected(board_view.move_grid):
 		board_res.board_moved.connect(board_view.move_grid)
-	#if not board_res.board_created.is_connected(board_view.update_grid):
-		#board_res.board_created.connect(board_view.update_grid)
+	if not board_res.board_created.is_connected(board_view.update_grid):
+		board_res.board_created.connect(board_view.update_grid)
 	if not board_res.merge_happened.is_connected(score.score_update):
 		board_res.merge_happened.connect(score.score_update)
 	if not board_res.game_over.is_connected(game_over):

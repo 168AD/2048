@@ -23,37 +23,17 @@ func update_grid(board: Array):
 			entry0.value = board[i][j]
 
 func move_grid(board: Array):
-	if direction == "left":
-		for i in row:
-			var zero_entries = []
-			var index = 0
-			for j in column:
-				var entry0: Entry = entries[Vector2(i, j)]
-				if entry0.value == 0:
-					zero_entries.append(entry0)
-					continue
-				elif entry0.value != board[i][index]:
-					var entry_next: Entry = entries[Vector2(i, min(j+1, 3))]
-					entry_next.value = 0
-				entry0.move_to_position = Vector2(i, index)
-				index += 1
-			for entry0 in zero_entries:
-				entry0.value = 0
-				entry0.move_to_position = Vector2(i, index)
-				index += 1
-	
-	_move_animate()
-	
-func _generate_tranverse_set() -> Array:
-	var tranverse_set = []
-	if direction == "left" or direction == "up":
-		for i in row:
-			tranverse_set.append(i)
-	else:
-		for i in row:
-			tranverse_set.append(3-i)
+	match direction:
+		"left":
+			_move_left(board)
+		"right":
+			_move_right(board)
+		"up":
+			_move_up(board)
+		"down":
+			_move_down(board)
 			
-	return tranverse_set
+	_move_animate()
 
 func _create_entries():
 	for i in row:
@@ -79,7 +59,92 @@ func _move_animate():
 		for j in column:
 			var entry0: Entry = entries[Vector2(i, j)]
 			var move_to_position = _entry_position(entry0.move_to_position)
-			tween.tween_property(entry0, "position", move_to_position, MOVE_DURATION)
 			new_entries[Vector2(entry0.move_to_position)] = entry0
+			if entry0.value == 0:
+				entry0.position = move_to_position
+				continue
+			tween.tween_property(entry0, "position", move_to_position, MOVE_DURATION)
 	
 	entries = new_entries
+
+#region 移动坐标计算
+func _move_left(board: Array):
+	for i in row:
+		var zero_entries = []
+		var index = 0
+		for j in column:
+			var entry0: Entry = entries[Vector2(i, j)]
+			if entry0.value == 0:
+				zero_entries.append(entry0)
+				continue
+			elif entry0.value != board[i][index]:
+				entry0.value = board[i][index]
+				var entry_next: Entry = entries[Vector2(i, min(j+1, 3))]
+				entry_next.value = 0
+			entry0.move_to_position = Vector2(i, index)
+			index += 1
+		for entry0 in zero_entries:
+			entry0.value = 0
+			entry0.move_to_position = Vector2(i, index)
+			index += 1
+			
+func _move_right(board: Array):
+	for i in row:
+		var zero_entries = []
+		var index = column - 1
+		for j in range(column - 1, -1, -1):
+			var entry0: Entry = entries[Vector2(i, j)]
+			if entry0.value == 0:
+				zero_entries.append(entry0)
+				continue
+			elif entry0.value != board[i][index]:
+				entry0.value = board[i][index]
+				var entry_next: Entry = entries[Vector2(i, max(j-1, 0))]
+				entry_next.value = 0
+			entry0.move_to_position = Vector2(i, index)
+			index -= 1
+		for entry0 in zero_entries:
+			entry0.value = 0
+			entry0.move_to_position = Vector2(i, index)
+			index -= 1
+			
+func _move_up(board: Array):
+	for j in column:
+		var zero_entries = []
+		var index = 0
+		for i in row:
+			var entry0: Entry = entries[Vector2(i, j)]
+			if entry0.value == 0:
+				zero_entries.append(entry0)
+				continue
+			elif entry0.value != board[index][j]:
+				entry0.value = board[index][j]
+				var entry_next: Entry = entries[Vector2(min(i+1, 3), j)]
+				entry_next.value = 0
+			entry0.move_to_position = Vector2(index, j)
+			index += 1
+		for entry0 in zero_entries:
+			entry0.value = 0
+			entry0.move_to_position = Vector2(index, j)
+			index += 1
+			
+func _move_down(board: Array):
+	for j in column:
+		var zero_entries = []
+		var index = row - 1
+		for i in range(row - 1, -1, -1):
+			var entry0: Entry = entries[Vector2(i, j)]
+			if entry0.value == 0:
+				zero_entries.append(entry0)
+				continue
+			elif entry0.value != board[index][j]:
+				entry0.value = board[index][j]
+				var entry_next: Entry = entries[Vector2(max(i-1, 0), j)]
+				entry_next.value = 0
+			entry0.move_to_position = Vector2(index, j)
+			index -= 1
+		for entry0 in zero_entries:
+			entry0.value = 0
+			entry0.move_to_position = Vector2(index, j)
+			index -= 1
+#endregion

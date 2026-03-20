@@ -21,6 +21,7 @@ func new_game():
 	board_future = {}
 	add_entry_future = {}
 	_add_entry_to_grid(2)
+	board_updated.emit(board)
 	GlobalLogger.info("新游戏开始")
 
 func load_initial():
@@ -66,7 +67,7 @@ func move(direction: String):
 		var old_y = add_result[1]
 		var value = add_result[2]
 		board[old_x][old_y] = value
-		board_created.emit(add_result)
+		board_created.emit(board)
 	else:
 		if direction in board_future:
 			board_future.clear()
@@ -75,7 +76,7 @@ func move(direction: String):
 		board_future[direction] = board.duplicate(true)
 		var add_result = _add_entry_to_grid(1)
 		add_entry_future[direction] = add_result.duplicate(true)
-		board_created.emit(add_result)
+		board_created.emit(board)
 		
 	if _game_is_over():
 		game_over.emit()
