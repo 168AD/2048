@@ -1,7 +1,9 @@
 extends GameRes
 class_name BoardRes
 
-signal board_updated
+signal board_updated(mat: Array)
+signal board_moved(mat: Array)
+signal board_created(result: Array)
 signal merge_happened
 signal game_over
 
@@ -55,6 +57,7 @@ func move(direction: String):
 	if not result:
 		return
 	
+	board_moved.emit(board)
 	board_history = pre_board_history.duplicate(true)
 	if direction in board_future and\
 	board_future[direction] == board:
@@ -63,7 +66,7 @@ func move(direction: String):
 		var old_y = add_result[1]
 		var value = add_result[2]
 		board[old_x][old_y] = value
-		board_updated.emit(board)
+		board_created.emit(add_result)
 	else:
 		if direction in board_future:
 			board_future.clear()
@@ -72,6 +75,7 @@ func move(direction: String):
 		board_future[direction] = board.duplicate(true)
 		var add_result = _add_entry_to_grid(1)
 		add_entry_future[direction] = add_result.duplicate(true)
+		board_created.emit(add_result)
 		
 	if _game_is_over():
 		game_over.emit()
@@ -121,7 +125,7 @@ func _add_entry_to_grid(number: int) -> Array:
 			added_number += 1
 			result = [new_x, new_y, value]
 	
-	board_updated.emit(board)
+	#board_updated.emit(board)
 	return result
 
 #region 移动方法
