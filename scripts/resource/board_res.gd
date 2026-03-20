@@ -1,9 +1,8 @@
 extends GameRes
 class_name BoardRes
 
-signal board_updated(mat: Array)
-signal board_moved(mat: Array)
-signal board_created(result: Array)
+signal board_updated(board: Array)
+signal move_processed(moves: Array, merges: Array, spawn: Dictionary)
 signal merge_happened
 signal game_over
 
@@ -39,6 +38,8 @@ func undo():
 func move(direction: String):
 	var pre_board_history = board.duplicate(true)
 	var result
+	var moves = []
+	var merges = []
 	match direction:
 		"left":
 			result = _move_left()
@@ -55,7 +56,10 @@ func move(direction: String):
 	if not result.moved_or_merged:
 		return
 	
-	board_moved.emit(board)
+	moves = result.moves
+	merges = result.merges
+	var spawn = {}
+	
 	board_history = pre_board_history.duplicate(true)
 	if direction in board_future and board_future[direction] == board:
 		var add_result = add_entry_future[direction]
@@ -63,7 +67,7 @@ func move(direction: String):
 		var old_y = add_result[1]
 		var value = add_result[2]
 		board[old_x][old_y] = value
-		board_created.emit(board)
+		spawn = {pos = Vector2(old_x, old_y), value = value}
 	else:
 		if direction in board_future:
 			board_future.clear()
@@ -72,11 +76,11 @@ func move(direction: String):
 		board_future[direction] = board.duplicate(true)
 		var add_result = _add_entry_to_grid(1)
 		add_entry_future[direction] = add_result.duplicate(true)
-		board_created.emit(board)
+		spawn = {pos = Vector2(add_result[0], add_result[1]), value = add_result[2]}
+		
+	move_processed.emit(moves, merges, spawn)
+	board_updated.emit(board)
 	
-	for i in row:
-		print(board[i])
-	print("-----------------")
 	if _game_is_over():
 		game_over.emit()
 
