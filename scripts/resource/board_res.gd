@@ -38,9 +38,6 @@ func undo():
 
 func move(direction: String):
 	var pre_board_history = board.duplicate(true)
-	#for i in row:
-		#print(board_history[i])
-	#print("-----------------")
 	var result
 	match direction:
 		"left":
@@ -55,13 +52,12 @@ func move(direction: String):
 		"down":
 			result = _move_down()
 	
-	if not result:
+	if not result.moved_or_merged:
 		return
 	
 	board_moved.emit(board)
 	board_history = pre_board_history.duplicate(true)
-	if direction in board_future and\
-	board_future[direction] == board:
+	if direction in board_future and board_future[direction] == board:
 		var add_result = add_entry_future[direction]
 		var old_x = add_result[0]
 		var old_y = add_result[1]
@@ -77,7 +73,10 @@ func move(direction: String):
 		var add_result = _add_entry_to_grid(1)
 		add_entry_future[direction] = add_result.duplicate(true)
 		board_created.emit(board)
-		
+	
+	for i in row:
+		print(board[i])
+	print("-----------------")
 	if _game_is_over():
 		game_over.emit()
 
@@ -130,7 +129,9 @@ func _add_entry_to_grid(number: int) -> Array:
 	return result
 
 #region 移动方法
-func _move_left() -> bool:
+func _move_left() -> Dictionary:
+	var moves = []
+	var merges = []
 	var moved_or_merged = false
 	var merged = false
 	for i in row:
@@ -139,25 +140,36 @@ func _move_left() -> bool:
 			if board[i][j] == 0:
 				continue
 			
-			if index == -1 or merged or\
-			 board[i][index] != board[i][j]:
+			var value = board[i][j]
+			if index == -1 or merged or board[i][index] != board[i][j]:
 				if index + 1 != j:
+					moves.append({
+						from = Vector2(i, j),
+						to = Vector2(i, index + 1),
+						value = value
+					})
 					board[i][index + 1] = board[i][j]
 					board[i][j] = 0
 					moved_or_merged = true
-					
+				
 				index += 1
 				merged = false
 			else:
+				merges.append({
+					from = Vector2(i, j),
+					to = Vector2(i, index),
+					new_value = value * 2
+				})
 				board[i][index] *= 2
 				board[i][j] = 0
 				merged = true
 				moved_or_merged = true
 				merge_happened.emit(board[i][index])
-	
-	return moved_or_merged
+	return {moved_or_merged = moved_or_merged, moves = moves, merges = merges}
 
-func _move_right() -> bool:
+func _move_right() -> Dictionary:
+	var moves = []
+	var merges = []
 	var moved_or_merged = false
 	var merged = false
 	for i in row:
@@ -165,26 +177,37 @@ func _move_right() -> bool:
 		for j in range(column - 1, -1, -1):
 			if board[i][j] == 0:
 				continue
-				
-			if index == column or merged or\
-			 board[i][index] != board[i][j]:
+			
+			var value = board[i][j]
+			if index == column or merged or board[i][index] != board[i][j]:
 				if index - 1 != j:
+					moves.append({
+						from = Vector2(i, j),
+						to = Vector2(i, index - 1),
+						value = value
+					})
 					board[i][index - 1] = board[i][j]
 					board[i][j] = 0
 					moved_or_merged = true
-					
+				
 				index -= 1
 				merged = false
 			else:
+				merges.append({
+					from = Vector2(i, j),
+					to = Vector2(i, index),
+					new_value = value * 2
+				})
 				board[i][index] *= 2
 				board[i][j] = 0
-				moved_or_merged = true
 				merged = true
+				moved_or_merged = true
 				merge_happened.emit(board[i][index])
-	
-	return moved_or_merged
+	return {moved_or_merged = moved_or_merged, moves = moves, merges = merges}
 
-func _move_up() -> bool:
+func _move_up() -> Dictionary:
+	var moves = []
+	var merges = []
 	var moved_or_merged = false
 	var merged = false
 	for j in column:
@@ -192,27 +215,37 @@ func _move_up() -> bool:
 		for i in row:
 			if board[i][j] == 0:
 				continue
-			
+				
 			var value = board[i][j]
-			if index == -1 or merged or\
-			 board[index][j] != value:
+			if index == -1 or merged or board[index][j] != value:
 				if index + 1 != i:
+					moves.append({
+						from = Vector2(i, j),
+						to = Vector2(index + 1, j),
+						value = value
+					})
 					board[index + 1][j] = board[i][j]
 					board[i][j] = 0
 					moved_or_merged = true
-					
+				
 				index += 1
 				merged = false
 			else:
+				merges.append({
+					from = Vector2(i, j),
+					to = Vector2(index, j),
+					new_value = value * 2
+				})
 				board[index][j] *= 2
 				board[i][j] = 0
-				moved_or_merged = true
 				merged = true
+				moved_or_merged = true
 				merge_happened.emit(board[index][j])
-	
-	return moved_or_merged
+	return {moved_or_merged = moved_or_merged, moves = moves, merges = merges}
 
-func _move_down() -> bool:
+func _move_down() -> Dictionary:
+	var moves = []
+	var merges = []
 	var moved_or_merged = false
 	var merged = false
 	for j in column:
@@ -221,21 +254,30 @@ func _move_down() -> bool:
 			if board[i][j] == 0:
 				continue
 			
-			if index == row or merged or\
-			 board[index][j] != board[i][j]:
+			var value = board[i][j]
+			if index == row or merged or board[index][j] != board[i][j]:
 				if index - 1 != i:
+					moves.append({
+						from = Vector2(i, j),
+						to = Vector2(index - 1, j),
+						value = value
+					})
 					board[index - 1][j] = board[i][j]
 					board[i][j] = 0
 					moved_or_merged = true
-					
+				
 				index -= 1
 				merged = false
 			else:
+				merges.append({
+					from = Vector2(i, j),
+					to = Vector2(index, j),
+					new_value = value * 2
+				})
 				board[index][j] *= 2
 				board[i][j] = 0
-				moved_or_merged = true
 				merged = true
+				moved_or_merged = true
 				merge_happened.emit(board[index][j])
-	
-	return moved_or_merged
+	return {moved_or_merged = moved_or_merged, moves = moves, merges = merges}
 #endregion
