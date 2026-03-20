@@ -8,6 +8,7 @@ class_name Entry
 		label.text = str(x)
 		
 var position_in_grid: Vector2
+var move_to_position: Vector2
 
 @onready var label: Label = $Label
 

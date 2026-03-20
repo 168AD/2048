@@ -25,6 +25,7 @@ func _create_entries():
 			var temp: Entry = entry.instantiate()
 			add_child(temp)
 			temp.position = _entry_position(Vector2(i, j))
+			temp.position_in_grid = Vector2(i, j)
 			entries[Vector2(i, j)] = temp
 
 func _entry_position(pos: Vector2):
