@@ -3,6 +3,7 @@ class_name BoardView
 
 @export var entry: PackedScene
 @export var entries = {}
+@export var direction: String
 
 var row = 4
 var column = 4

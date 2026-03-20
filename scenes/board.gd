@@ -29,6 +29,7 @@ func game_over():
 
 func _on_move_requested(direction: String):
 	score.save_history()
+	board_view.direction = direction
 	board_res.move(direction)
 	
 func _on_undo_requested():
