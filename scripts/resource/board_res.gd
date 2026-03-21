@@ -1,7 +1,7 @@
 extends GameRes
 class_name BoardRes
 
-signal board_updated(board: Array)
+signal board_initial(board: Array)
 signal move_processed(moves: Array, merges: Array, spawn: Dictionary)
 signal merge_happened
 signal game_over
@@ -20,20 +20,19 @@ func new_game():
 	board_future = {}
 	add_entry_future = {}
 	_add_entry_to_grid(2)
-	board_updated.emit(board)
+	board_initial.emit(board)
 	GlobalLogger.info("新游戏开始")
 
 func load_initial():
 	if board.is_empty():
 		board = _create_space_array()
 		_add_entry_to_grid(2)
-	board_updated.emit(board)
+	board_initial.emit(board)
 
 func undo():
 	if not board_history:
 		return
 	board = board_history.duplicate(true)
-	board_updated.emit(board)
 
 func move(direction: String):
 	var pre_board_history = board.duplicate(true)
@@ -79,7 +78,9 @@ func move(direction: String):
 		spawn = {pos = Vector2(add_result[0], add_result[1]), value = add_result[2]}
 		
 	move_processed.emit(moves, merges, spawn)
-	board_updated.emit(board)
+	GlobalLogger.debug("移动信息：" + str(moves), "BoardRes")
+	GlobalLogger.debug("合并信息：" + str(merges), "BoardRes")
+	GlobalLogger.debug("生成信息：" + str(spawn), "BoardRes")
 	
 	if _game_is_over():
 		game_over.emit()
@@ -129,7 +130,6 @@ func _add_entry_to_grid(number: int) -> Array:
 			added_number += 1
 			result = [new_x, new_y, value]
 	
-	#board_updated.emit(board)
 	return result
 
 #region 移动方法

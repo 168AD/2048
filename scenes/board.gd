@@ -40,8 +40,10 @@ func _connect_signals():
 	input_manager.move_requested.connect(_on_move_requested)
 	input_manager.undo_requested.connect(_on_undo_requested)
 
-	if not board_res.board_updated.is_connected(board_view.update_grid):
-		board_res.board_updated.connect(board_view.update_grid)
+	if not board_res.board_initial.is_connected(board_view.grid_initial):
+		board_res.board_initial.connect(board_view.grid_initial)
+	if not board_res.move_processed.is_connected(board_view._on_move_processed):
+		board_res.move_processed.connect(board_view._on_move_processed)
 	if not board_res.merge_happened.is_connected(score.score_update):
 		board_res.merge_happened.connect(score.score_update)
 	if not board_res.game_over.is_connected(game_over):
