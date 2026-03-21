@@ -33,6 +33,7 @@ func undo():
 	if not board_history:
 		return
 	board = board_history.duplicate(true)
+	board_initial.emit(board)
 
 func move(direction: String):
 	var pre_board_history = board.duplicate(true)

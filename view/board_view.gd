@@ -19,6 +19,7 @@ func grid_initial(board: Array):
 	if entries:
 		for pos in entries.keys():
 			entries[pos].queue_free()
+			entries.erase(pos)
 	
 	for i in row:
 		for j in column:
@@ -47,59 +48,52 @@ func _on_move_processed(moves: Array, merges: Array, spawn: Dictionary):
 	var tween = create_tween()
 	tween.set_parallel(true)
 	
+	var new_entries = {}
+	var to_delete = []
+	
 	for move in moves:
-		var entry0 = entries.get(move.from)
+		var entry0: Entry = entries.get(move.from)
 		if entry0 == null:
 			continue
+			
+		entry0.position_in_grid = move.to
+		new_entries[move.to] = entry0
+		
 		var target_pos = _entry_position(move.to)
 		tween.tween_property(entry0, "position", target_pos, MOVE_DURATION)
+		
+		GlobalLogger.debug("从" + str(move.from) + "到" + str(move.to), "BoardView")
 	
 	for merge in merges:
-		var from_entry = entries.get(merge.from)
-		var to_entry = entries.get(merge.to)
+		var from_entry: Entry = entries.get(merge.from)
+		var to_entry: Entry = entries.get(merge.to)
+		if not to_entry or to_entry.position_in_grid != merge.to:
+			to_entry = new_entries.get(merge.to)
+			
 		if from_entry and to_entry:
+			GlobalLogger.debug("从" + str(merge.from) + "并到" + str(merge.to), "BoardView")
+			#to_entry.position_in_grid = merge.to
+			#new_entries[merge.to] = to_entry
+			to_entry.value = merge.new_value
+			to_delete.append(from_entry)
+			
 			var target_pos = _entry_position(merge.to)
 			tween.tween_property(from_entry, "position", target_pos, MOVE_DURATION)
 			tween.tween_property(from_entry, "modulate:a", 0.0, MOVE_DURATION)
 			var scale_tween = create_tween()
 			scale_tween.tween_property(to_entry, "scale", Vector2(1.2, 1.2), MOVE_DURATION/2)
 			scale_tween.tween_property(to_entry, "scale", Vector2(1.0, 1.0), MOVE_DURATION/2)
-			to_entry.value = merge.new_value
-			
+	
 	if spawn:
-		var spawn_entry = entries.get(spawn.pos)
-		if spawn_entry:
-			spawn_entry.value = spawn.value
-			spawn_entry.modulate = Color(1,1,1,0)
-			tween.tween_property(spawn_entry, "modulate:a", 1.0, MOVE_DURATION)
-		
+		var spawn_entry: Entry = entry.instantiate()
+		add_child(spawn_entry)
+		spawn_entry.value = spawn.value
+		spawn_entry.position_in_grid = spawn.pos
+		new_entries[spawn.pos] = spawn_entry
+		spawn_entry.modulate = Color(1,1,1,0)
+		tween.tween_property(spawn_entry, "modulate:a", 1.0, MOVE_DURATION)
+	
 	await tween.finished
-	
-	var new_entries = {}
-	var to_delete = []
-	for move in moves:
-		var entry0: Entry = entries.get(move.from)
-		if entry0 == null:
-			continue
-		entry0.position_in_grid = move.to
-		new_entries[move.to] = entry0
-		GlobalLogger.info("从" + str(move.from) + "到" + str(move.to), "BoardView")
-		
-	for merge in merges:
-		var from_entry: Entry = entries.get(merge.from)
-		var to_entry: Entry = new_entries.get(merge.to)
-		if from_entry and to_entry:
-			to_delete.append(from_entry)
-			to_entry.position_in_grid = merge.to
-			new_entries[merge.to] = to_entry
-		else:
-			GlobalLogger.warning("合并时找不到格子", "BoardView")
-	
-	if spawn:
-		var spawn_entry: Entry = entries.get(spawn.pos)
-		if spawn_entry:
-			spawn_entry.position_in_grid = spawn.pos
-			new_entries[spawn.pos] = spawn_entry
 	
 	for pos in entries:
 		var entry0 = entries[pos]
@@ -118,5 +112,5 @@ func _on_move_processed(moves: Array, merges: Array, spawn: Dictionary):
 	for pos in entries.keys():
 		var entry0: Entry = entries[pos]
 		entry0.position = _entry_position(entry0.position_in_grid)
-		
+	
 	is_animating = false
