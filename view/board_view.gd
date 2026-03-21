@@ -20,8 +20,10 @@ var offset = 128.0
 func grid_initial(board: Array):
 	if entries:
 		for pos in entries.keys():
+			if entries[pos] == null:
+				continue
 			entries[pos].queue_free()
-			entries.erase(pos)
+		entries.clear()
 	
 	for i in row:
 		for j in column:
@@ -67,15 +69,16 @@ func _on_move_processed(moves: Array, merges: Array, spawn: Dictionary):
 		GlobalLogger.debug("从" + str(move.from) + "到" + str(move.to), "BoardView")
 	
 	for merge in merges:
+		GlobalLogger.debug("执行合并" + str(merge), "BoardView")
 		var from_entry: Entry = entries.get(merge.from)
 		var to_entry: Entry = entries.get(merge.to)
-		if not to_entry or to_entry.position_in_grid != merge.to:
+		if not to_entry or to_entry in to_delete or to_entry.position_in_grid != merge.to:
 			to_entry = new_entries.get(merge.to)
 			
 		if from_entry and to_entry:
-			GlobalLogger.debug("从" + str(merge.from) + "并到" + str(merge.to), "BoardView")
-			#to_entry.position_in_grid = merge.to
-			#new_entries[merge.to] = to_entry
+			GlobalLogger.debug("从" + str(merge.from) + "并到" + str(merge.to) + ", 值为：" + str(merge.new_value), "BoardView")
+			to_entry.position_in_grid = merge.to
+			new_entries[merge.to] = to_entry
 			to_entry.value = merge.new_value
 			to_delete.append(from_entry)
 			
@@ -89,10 +92,11 @@ func _on_move_processed(moves: Array, merges: Array, spawn: Dictionary):
 	if spawn:
 		var spawn_entry: Entry = entry.instantiate()
 		add_child(spawn_entry)
-		spawn_entry.value = spawn.value
-		spawn_entry.position_in_grid = spawn.pos
-		new_entries[spawn.pos] = spawn_entry
 		spawn_entry.modulate = Color(1,1,1,0)
+		new_entries[spawn.pos] = spawn_entry
+		spawn_entry.position_in_grid = spawn.pos
+		spawn_entry.position = _entry_position(spawn.pos)
+		spawn_entry.value = spawn.value
 		tween.tween_property(spawn_entry, "modulate:a", 1.0, MOVE_DURATION)
 	
 	await tween.finished
@@ -107,7 +111,8 @@ func _on_move_processed(moves: Array, merges: Array, spawn: Dictionary):
 		new_entries[pos] = entry0
 	
 	for entry0 in to_delete:
-		entry0.queue_free()
+		if entry0:
+			entry0.queue_free()
 		
 	entries = new_entries
 	

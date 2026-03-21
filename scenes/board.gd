@@ -38,6 +38,13 @@ func _on_move_requested(direction: String):
 	board_view.direction = direction
 	board_res.move(direction)
 	
+func _on_new_game_requested():
+	pending_directions.clear()
+	if board_view.is_animating:
+		await board_view.animation_finished
+	board_res.new_game()
+	score.new_game()
+	
 func _on_undo_requested():
 	score.undo()
 	board_res.undo()
@@ -61,8 +68,7 @@ func _connect_signals():
 	if not board_res.game_over.is_connected(game_over):
 		board_res.game_over.connect(game_over)
 	
-	new_game.pressed.connect(board_res.new_game)
-	new_game.pressed.connect(score.new_game)
+	new_game.pressed.connect(_on_new_game_requested)
 	
 	localization.language_update.connect(score.language_update)
 	
