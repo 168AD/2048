@@ -8,6 +8,8 @@ extends Persist
 
 @export var board_res: BoardRes
 
+var pending_directions := []
+
 #region 存读档
 func save_res() -> GameRes:
 	return board_res
@@ -28,6 +30,10 @@ func game_over():
 	GlobalLogger.info("游戏结束")
 
 func _on_move_requested(direction: String):
+	if board_view.is_animating:
+		pending_directions.append(direction)
+		return
+		
 	score.save_history()
 	board_view.direction = direction
 	board_res.move(direction)
@@ -35,6 +41,12 @@ func _on_move_requested(direction: String):
 func _on_undo_requested():
 	score.undo()
 	board_res.undo()
+	
+func _on_animation_finished():
+	if pending_directions.is_empty():
+		return
+	var direction = pending_directions.pop_front()
+	_on_move_requested(direction)
 
 func _connect_signals():
 	input_manager.move_requested.connect(_on_move_requested)
@@ -53,5 +65,7 @@ func _connect_signals():
 	new_game.pressed.connect(score.new_game)
 	
 	localization.language_update.connect(score.language_update)
+	
+	board_view.animation_finished.connect(_on_animation_finished)
 	
 	GlobalLogger.info("---游戏启动---")

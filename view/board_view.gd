@@ -1,6 +1,8 @@
 extends Node2D
 class_name BoardView
 
+signal animation_finished
+
 @export var entry: PackedScene
 @export var entries = {}
 @export var direction: String
@@ -114,3 +116,4 @@ func _on_move_processed(moves: Array, merges: Array, spawn: Dictionary):
 		entry0.position = _entry_position(entry0.position_in_grid)
 	
 	is_animating = false
+	animation_finished.emit()
