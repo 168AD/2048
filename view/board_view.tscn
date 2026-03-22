@@ -3,11 +3,14 @@
 [ext_resource type="Script" uid="uid://b1wy226y7wdkb" path="res://view/board_view.gd" id="1_jcgq1"]
 [ext_resource type="PackedScene" uid="uid://ddaukc3rma5ry" path="res://scenes/entry.tscn" id="2_e7v5y"]
 
-[node name="BoardView" type="Node2D" unique_id=388317679]
+[node name="BoardView" type="Control" unique_id=347501931]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_jcgq1")
 entry = ExtResource("2_e7v5y")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=2000305084]
+layout_mode = 0
 offset_left = 224.0
 offset_top = 14.0
 offset_right = 736.0

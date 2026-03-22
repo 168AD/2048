@@ -1,4 +1,4 @@
-extends Node2D
+extends Control
 class_name BoardView
 
 signal animation_finished
