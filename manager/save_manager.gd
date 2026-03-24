@@ -36,8 +36,8 @@ func save_data() -> void:
 			data_dict[node.get_path()] = data
 		else:
 			GlobalLogger.warning("节点 %s 返回空存档数据" % node.name, "存档")
-			
-	save_resource.time_tamp = Time.get_date_string_from_system()
+	
+	save_resource.time_stamp = Time.get_date_string_from_system()
 	save_resource.version = version
 
 	# 2.新建临时存档
@@ -87,12 +87,27 @@ func save_data() -> void:
 			GlobalLogger.info("已从备份恢复存档", "存档")
 			if FileAccess.file_exists(TEMP_PATH):
 				DirAccess.remove_absolute(TEMP_PATH)
+				
+	#6.储存存档摘要
+	var meta = MetaRes.new()
+	meta.slot = slot
+	meta.version = version
+	meta.timestamp = save_resource.time_stamp
+	for res in save_resource.values():
+		if res is ScoreRes:
+			meta.score = res.score
+			meta.highest = res.highest
+			break
+	
+	var meta_path = "user://sav%d_meta.tres" % slot
+	ResourceSaver.save(meta, meta_path)
 	
 func save_to_manager(path: String, res: Resource) -> void:
 	save_resource.save_dict[path] = res
 		
 #endregion
 
+#region 读档
 func load_data() -> void:
 	if not ResourceLoader.exists(SAVE_PATH):
 		return 
@@ -109,6 +124,14 @@ func get_from_manager(path: String) -> Resource:
 	else:
 		GlobalLogger.warning("未查询到" + path + "请求的数据", "存档")
 		return null
+		
+func get_slot_meta(n: int) -> MetaRes:
+	var path = "user://save%d_meta.tres" % n
+	if ResourceLoader.exists(path):
+		return load(path) as MetaRes
+	return null
+	
+#endregion
 
 func _version_migrate(resource: SaveRes) -> SaveRes:
 	var ver = resource.version
@@ -120,6 +143,10 @@ func _version_migrate(resource: SaveRes) -> SaveRes:
 				resource.save_dict.erase("/root/Score")
 				resource.version = "0.1"
 				resource = _version_migrate(resource)
+				
+			"0.1":
+				if resource.has_meta("time_tamp"):
+					resource.time_stamp = resource.time_tamp
 				
 	return resource
 	
