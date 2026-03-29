@@ -89,18 +89,18 @@ func save_data() -> void:
 				DirAccess.remove_absolute(TEMP_PATH)
 				
 	#6.储存存档摘要
-	var meta = MetaRes.new()
-	meta.slot = slot
-	meta.version = version
-	meta.timestamp = save_resource.time_stamp
-	for res in save_resource.values():
-		if res is ScoreRes:
-			meta.score = res.score
-			meta.highest = res.highest
-			break
-	
-	var meta_path = "user://sav%d_meta.tres" % slot
-	ResourceSaver.save(meta, meta_path)
+	#var meta = MetaRes.new()
+	#meta.slot = slot
+	#meta.version = version
+	#meta.time_stamp = save_resource.time_stamp
+	#for res in save_resource.save_dict.values():
+		#if res is ScoreRes:
+			#meta.score = res.score
+			#meta.highest = res.highest
+			#break
+	#
+	#var meta_path = "user://sav%d_meta.tres" % slot
+	#ResourceSaver.save(meta, meta_path)
 	
 func save_to_manager(path: String, res: Resource) -> void:
 	save_resource.save_dict[path] = res
