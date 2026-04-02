@@ -17,4 +17,4 @@ func update_slot(slot: int, save_res: SaveRes):
 		slot_meta.slot = slot
 		slots.append(slot_meta)
 	
-	slot_meta
+	slot_meta.create_meta(save_res)

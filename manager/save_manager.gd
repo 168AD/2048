@@ -4,17 +4,16 @@ class_name SaveManager
 # signal slot_changes
 
 @export var save_resource: SaveRes
+@export var saves_meta: AllSlotsRes
 @export var version: String = "0.1"
-@export var slot: int = 1:
-	set(n):
-		slot = n
-		SAVE_PATH = "user://sav%d.tres" % slot
-		TEMP_PATH = "user://sav%d.tmp.tres" % slot
-		BACKUP_PATH = "user://sav%d.bak.tres" % slot
+@export var slot: int = 1
 
-var SAVE_PATH: String = "user://sav%d.tres" % slot
-var TEMP_PATH: String = "user://sav%d.tmp.tres" % slot
-var BACKUP_PATH: String = "user://sav%d.bak.tres" % slot
+const PATH: String = "user://sav%d%s.tres"
+const META: String = "user://meta%s.tres"
+
+func _process(_delta: float) -> void:
+	if Input.is_action_just_pressed("ui_accept"):
+		save_data()
 
 func _ready() -> void:
 	load_data()
@@ -40,53 +39,72 @@ func save_data() -> void:
 	save_resource.time_stamp = Time.get_date_string_from_system()
 	save_resource.version = version
 
-	# 2.新建临时存档
-	var temp_err = ResourceSaver.save(save_resource, TEMP_PATH)
+	# 2.保存存档
+	var result = save_files(PATH % [slot, "%s"], save_resource)
+	if not result:
+		return
+	
+	# 3.生成存档摘要
+	saves_meta.update_slot(slot, save_resource)
+	
+	# 4.保存存档摘要
+	save_files(META, saves_meta)
+
+func save_files(path: String, res: Resource) -> bool:
+	# 1.新建临时存档
+	var temp_path = path % ".temp"
+	GlobalLogger.debug("临时存档路径" + temp_path, "存档")
+	var temp_err = ResourceSaver.save(res, temp_path)
 	if temp_err == OK:
 		GlobalLogger.debug("临时存档保存成功", "存档")
 	else:
 		GlobalLogger.error("临时存档保存失败！错误码： %d" % temp_err , "存档")
 		push_error("临时存档保存失败，存档中止！", temp_err)
-		return
+		return false
 
-	# 3.删除旧备份存档
-	if FileAccess.file_exists(BACKUP_PATH):
-		var del_err = DirAccess.remove_absolute(BACKUP_PATH)
+	# 2.删除旧备份存档
+	var backup_path = path % ".bak"
+	GlobalLogger.debug("临时旧备份路径" + backup_path, "存档")
+	if FileAccess.file_exists(backup_path):
+		var del_err = DirAccess.remove_absolute(backup_path)
 		if del_err == OK:
 			GlobalLogger.debug("删除旧备份成功", "存档")
 		else:
 			GlobalLogger.warning("删除旧备份失败，错误码：%d" % del_err, "存档")
 	
-	# 4.重命名旧存档
-	if FileAccess.file_exists(SAVE_PATH):
-		var rename_err = DirAccess.rename_absolute(SAVE_PATH, BACKUP_PATH)
+	# 3.重命名旧存档
+	var save_path = path % ""
+	GlobalLogger.debug("存档路径" + save_path, "存档")
+	if FileAccess.file_exists(save_path):
+		var rename_err = DirAccess.rename_absolute(save_path, backup_path)
 		if rename_err == OK:
 			GlobalLogger.debug("重命名旧存档为备份存档成功", "存档")
 		else:
 			GlobalLogger.warning("重命名旧存档为备份存档失败，存档取消！错误码 %d" % rename_err, "存档")
-			return
+			return false
 
-	# 5.重命名临时存档
-	var result = DirAccess.rename_absolute(TEMP_PATH, SAVE_PATH)
+	# 4.重命名临时存档
+	var result = DirAccess.rename_absolute(temp_path, save_path)
 	if result == OK:
 		GlobalLogger.debug("临时存档重命名成功", "存档")
 		GlobalLogger.info("存档成功", "存档")
+		return true
 	else:
 		GlobalLogger.error("临时存档重命名失败，存档可能丢失，错误码： %d" % result, "存档")
-		if not FileAccess.file_exists(BACKUP_PATH):
+		if not FileAccess.file_exists(backup_path):
 			GlobalLogger.error("备份存档丢失，无法恢复！", "存档")
 			push_error("备份存档丢失，无法恢复！")
-			return
 
-		var err = DirAccess.rename_absolute(BACKUP_PATH, SAVE_PATH)
+		var err = DirAccess.rename_absolute(backup_path, save_path)
 		if err != OK:
 			GlobalLogger.error("恢复备份失败，存档可能丢失！", "存档")
 			push_error("恢复备份存档失败")
-			return
 		else:
 			GlobalLogger.info("已从备份恢复存档", "存档")
-			if FileAccess.file_exists(TEMP_PATH):
-				DirAccess.remove_absolute(TEMP_PATH)
+			if FileAccess.file_exists(temp_path):
+				DirAccess.remove_absolute(temp_path)
+			
+		return false
 				
 	#6.储存存档摘要
 	#var meta = MetaRes.new()
@@ -109,14 +127,28 @@ func save_to_manager(path: String, res: Resource) -> void:
 
 #region 读档
 func load_data() -> void:
-	if not ResourceLoader.exists(SAVE_PATH):
+	var save_path = PATH % [slot, ""]
+	if not ResourceLoader.exists(save_path):
+		saves_meta = AllSlotsRes.new()
 		return 
 		
-	var saved_data = ResourceLoader.load(SAVE_PATH) as SaveRes
+	var saved_data = ResourceLoader.load(save_path) as SaveRes
 	if saved_data:
 		save_resource = _version_migrate(saved_data)
 	else:
 		GlobalLogger.error("读档失败！", "读档")
+		
+	var meta_path = META % ""
+	if not ResourceLoader.exists(meta_path):
+		saves_meta = AllSlotsRes.new()
+		return
+	
+	var meta_data = ResourceLoader.load(meta_path) as AllSlotsRes
+	if not meta_data:
+		saves_meta = AllSlotsRes.new()
+		return
+	
+	saves_meta = meta_data
 
 func get_from_manager(path: String) -> Resource:
 	if save_resource.save_dict.has(path):
