@@ -18,7 +18,8 @@ const META: String = "user://meta%s.tres"
 		#save_data()
 
 func _ready() -> void:
-	load_data()
+	load_meta()
+	load_data(slot)
 
 func _exit_tree() -> void:
 	save_data()
@@ -50,7 +51,8 @@ func save_data() -> void:
 	saves_meta.update_slot(slot, save_resource)
 	
 	# 4.保存存档摘要
-	save_files(saves_meta, META % "", META % "_bak", META % "_tmp")
+	if not save_files(saves_meta, META % "", META % "_bak", META % "_tmp"):
+		GlobalLogger.warning("摘要文件保存失败，但存档保存成功", "存档")
 
 func save_files(res: Resource, save_path: String, backup_path: String, temp_path: String) -> bool:
 	# 1.新建临时存档
@@ -107,20 +109,6 @@ func save_files(res: Resource, save_path: String, backup_path: String, temp_path
 				DirAccess.remove_absolute(temp_path)
 			
 		return false
-				
-	#6.储存存档摘要
-	#var meta = MetaRes.new()
-	#meta.slot = slot
-	#meta.version = version
-	#meta.time_stamp = save_resource.time_stamp
-	#for res in save_resource.save_dict.values():
-		#if res is ScoreRes:
-			#meta.score = res.score
-			#meta.highest = res.highest
-			#break
-	#
-	#var meta_path = "user://sav%d_meta.tres" % slot
-	#ResourceSaver.save(meta, meta_path)
 	
 func save_to_manager(path: String, res: Resource) -> void:
 	save_resource.save_dict[path] = res
@@ -128,29 +116,30 @@ func save_to_manager(path: String, res: Resource) -> void:
 #endregion
 
 #region 读档
-func load_data() -> void:
-	var save_path = SAVE_PATH % slot
-	if not ResourceLoader.exists(save_path):
-		saves_meta = AllSlotsRes.new()
-		return 
-		
-	var saved_data = ResourceLoader.load(save_path) as SaveRes
-	if saved_data:
-		save_resource = _version_migrate(saved_data)
-	else:
-		GlobalLogger.error("读档失败！", "读档")
-		
+func load_meta() -> void:
 	var meta_path = META % ""
-	if not ResourceLoader.exists(meta_path):
-		saves_meta = AllSlotsRes.new()
-		return
+	if ResourceLoader.exists(meta_path):
+		var saved_saves_meta = ResourceLoader.load(meta_path) as AllSlotsRes
+		if saved_saves_meta:
+			saves_meta = saved_saves_meta
+			GlobalLogger.info("存档摘要读取成功", "存档")
+			return
+		
+	saves_meta = AllSlotsRes.new()
+	GlobalLogger.info("新建存档摘要", "存档")
+
+func load_data(slot_id: int) -> void:
+	slot = slot_id
+	var save_path = SAVE_PATH % slot
+	if ResourceLoader.exists(save_path):
+		var saved_data = ResourceLoader.load(save_path) as SaveRes
+		if saved_data:
+			save_resource = _version_migrate(saved_data)
+			GlobalLogger.info("读取存档成功", "存档")
+			return
 	
-	var meta_data = ResourceLoader.load(meta_path) as AllSlotsRes
-	if not meta_data:
-		saves_meta = AllSlotsRes.new()
-		return
-	
-	saves_meta = meta_data
+	save_resource = SaveRes.new()
+	GlobalLogger.info("新建存档文件", "存档")
 
 func get_from_manager(path: String) -> Resource:
 	if save_resource.save_dict.has(path):
@@ -158,6 +147,9 @@ func get_from_manager(path: String) -> Resource:
 	else:
 		GlobalLogger.warning("未查询到" + path + "请求的数据", "存档")
 		return null
+
+func get_slot_meta(slot_id: int) -> MetaRes:
+	return saves_meta.get_slot_meta(slot_id)
 	
 #endregion
 

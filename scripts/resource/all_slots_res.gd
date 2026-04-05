@@ -3,7 +3,7 @@ class_name AllSlotsRes
 
 @export var slots: Array[MetaRes]
 
-func get_slot(slot: int) -> MetaRes:
+func get_slot_meta(slot: int) -> MetaRes:
 	for s in slots:
 		if s.slot == slot:
 			return s
@@ -11,7 +11,7 @@ func get_slot(slot: int) -> MetaRes:
 	return null
 	
 func update_slot(slot: int, save_res: SaveRes):
-	var slot_meta = get_slot(slot)
+	var slot_meta = get_slot_meta(slot)
 	if not slot_meta:
 		slot_meta = MetaRes.new()
 		slot_meta.slot = slot

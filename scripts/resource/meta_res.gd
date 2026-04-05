@@ -12,6 +12,9 @@ class_name MetaRes
 func create_meta(save_res: SaveRes):
 	version = save_res.version
 	time_stamp = save_res.time_stamp
+	
+	score = 0
+	highest = 0
 	for res in save_res.save_dict.values():
 		GlobalLogger.info("遍历存档文件", "摘要")
 		if res is ScoreRes:
