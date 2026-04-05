@@ -1,0 +1,14 @@
+[gd_resource type="Theme" format=3 uid="uid://c01r0bseo4o7a"]
+
+[ext_resource type="StyleBox" uid="uid://ddc1ciiqevhf4" path="res://ui/theme/focus_button.tres" id="1_skpi2"]
+[ext_resource type="StyleBox" uid="uid://cvxfmmnvkbako" path="res://ui/theme/hover_button.tres" id="2_hsrf5"]
+[ext_resource type="StyleBox" uid="uid://gohp6v76osrm" path="res://ui/theme/normal_button.tres" id="3_qppmq"]
+[ext_resource type="StyleBox" uid="uid://cpgtrfsygxks1" path="res://ui/theme/background.tres" id="4_mceit"]
+
+[resource]
+Button/font_sizes/font_size = 32
+Button/styles/focus = ExtResource("1_skpi2")
+Button/styles/hover = ExtResource("2_hsrf5")
+Button/styles/normal = ExtResource("3_qppmq")
+Label/font_sizes/font_size = 128
+Panel/styles/panel = ExtResource("4_mceit")

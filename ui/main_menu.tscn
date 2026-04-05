@@ -1,17 +1,45 @@
 [gd_scene format=3 uid="uid://bp0dwmix73qb7"]
 
-[ext_resource type="StyleBox" uid="uid://gohp6v76osrm" path="res://ui/theme/normal_button.tres" id="1_0dkrt"]
-[ext_resource type="StyleBox" uid="uid://ddc1ciiqevhf4" path="res://ui/theme/focus_button.tres" id="1_rmr83"]
-[ext_resource type="Texture2D" uid="uid://cn1ljguraisrb" path="res://ui/assets/background.png" id="1_t7e0r"]
-[ext_resource type="StyleBox" uid="uid://cvxfmmnvkbako" path="res://ui/theme/hover_button.tres" id="1_wk0pr"]
+[ext_resource type="Theme" uid="uid://c01r0bseo4o7a" path="res://ui/theme/main_menu.tres" id="1_0dkrt"]
+[ext_resource type="PackedScene" uid="uid://rrcu5xax8xb0" path="res://ui/slot_slection.tscn" id="3_wk0pr"]
 [ext_resource type="Script" uid="uid://oejiripf31c5" path="res://ui/main_menu.gd" id="4_8uxxo"]
 
-[sub_resource type="Theme" id="Theme_wk0pr"]
-Button/font_sizes/font_size = 32
-Button/styles/focus = ExtResource("1_rmr83")
-Button/styles/hover = ExtResource("1_wk0pr")
-Button/styles/normal = ExtResource("1_0dkrt")
-Label/font_sizes/font_size = 128
+[sub_resource type="Animation" id="Animation_wk0pr"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SlotSlection:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 720)]
+}
+
+[sub_resource type="Animation" id="Animation_rmr83"]
+resource_name = "start_game"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SlotSlection:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 720), Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8uxxo"]
+_data = {
+&"RESET": SubResource("Animation_wk0pr"),
+&"start_game": SubResource("Animation_rmr83")
+}
 
 [node name="MainMenu" type="Control" unique_id=692941830]
 layout_mode = 3
@@ -20,17 +48,16 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = SubResource("Theme_wk0pr")
+theme = ExtResource("1_0dkrt")
 script = ExtResource("4_8uxxo")
 
-[node name="Background" type="TextureRect" parent="." unique_id=1304907967]
+[node name="BackGround" type="Panel" parent="." unique_id=89762139]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_t7e0r")
 
 [node name="Title" type="Label" parent="." unique_id=1120989925]
 layout_mode = 1
@@ -70,6 +97,14 @@ text = "KEY_SETTINGS"
 [node name="Exit" type="Button" parent="VBoxContainer" unique_id=392717191]
 layout_mode = 2
 text = "KEY_EXIT"
+
+[node name="SlotSlection" parent="." unique_id=1381006384 instance=ExtResource("3_wk0pr")]
+layout_mode = 1
+offset_top = 720.0
+offset_bottom = 719.99963
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=340998262]
+libraries/ = SubResource("AnimationLibrary_8uxxo")
 
 [connection signal="pressed" from="VBoxContainer/Start" to="." method="_on_start_pressed"]
 [connection signal="pressed" from="VBoxContainer/Exit" to="." method="_on_exit_pressed"]
