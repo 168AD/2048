@@ -9,7 +9,7 @@ class_name MetaRes
 @export var score: int
 @export var highest: int
 
-func create_meta(save_res: SaveRes):
+func update_meta(save_res: SaveRes):
 	version = save_res.version
 	time_stamp = save_res.time_stamp
 	
