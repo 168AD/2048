@@ -8,12 +8,14 @@ class_name SaveManager
 @export var version: String = "0.1"
 @export var slot: int = 1
 
-const PATH: String = "user://sav%d%s.tres"
+const SAVE_PATH: String = "user://sav%d.tres"
+const BACK_PATH: String = "user://sav%d_bak.tres"
+const TEMP_PATH: String = "user://sav%d_tmp.tres"
 const META: String = "user://meta%s.tres"
 
-func _process(_delta: float) -> void:
-	if Input.is_action_just_pressed("ui_accept"):
-		save_data()
+#func _process(_delta: float) -> void:
+	#if Input.is_action_just_pressed("ui_accept"):
+		#save_data()
 
 func _ready() -> void:
 	load_data()
@@ -40,7 +42,7 @@ func save_data() -> void:
 	save_resource.version = version
 
 	# 2.保存存档
-	var result = save_files(PATH % [slot, "%s"], save_resource)
+	var result = save_files(save_resource, SAVE_PATH % slot, BACK_PATH % slot, TEMP_PATH % slot)
 	if not result:
 		return
 	
@@ -48,11 +50,11 @@ func save_data() -> void:
 	saves_meta.update_slot(slot, save_resource)
 	
 	# 4.保存存档摘要
-	save_files(META, saves_meta)
+	save_files(saves_meta, META % "", META % "_bak", META % "_tmp")
 
-func save_files(path: String, res: Resource) -> bool:
+func save_files(res: Resource, save_path: String, backup_path: String, temp_path: String) -> bool:
 	# 1.新建临时存档
-	var temp_path = path % ".temp"
+	#var temp_path = path % ".temp"
 	GlobalLogger.debug("临时存档路径" + temp_path, "存档")
 	var temp_err = ResourceSaver.save(res, temp_path)
 	if temp_err == OK:
@@ -63,7 +65,7 @@ func save_files(path: String, res: Resource) -> bool:
 		return false
 
 	# 2.删除旧备份存档
-	var backup_path = path % ".bak"
+	#var backup_path = path % ".bak"
 	GlobalLogger.debug("临时旧备份路径" + backup_path, "存档")
 	if FileAccess.file_exists(backup_path):
 		var del_err = DirAccess.remove_absolute(backup_path)
@@ -73,7 +75,7 @@ func save_files(path: String, res: Resource) -> bool:
 			GlobalLogger.warning("删除旧备份失败，错误码：%d" % del_err, "存档")
 	
 	# 3.重命名旧存档
-	var save_path = path % ""
+	#var save_path = path % ""
 	GlobalLogger.debug("存档路径" + save_path, "存档")
 	if FileAccess.file_exists(save_path):
 		var rename_err = DirAccess.rename_absolute(save_path, backup_path)
@@ -127,7 +129,7 @@ func save_to_manager(path: String, res: Resource) -> void:
 
 #region 读档
 func load_data() -> void:
-	var save_path = PATH % [slot, ""]
+	var save_path = SAVE_PATH % slot
 	if not ResourceLoader.exists(save_path):
 		saves_meta = AllSlotsRes.new()
 		return 
@@ -156,12 +158,6 @@ func get_from_manager(path: String) -> Resource:
 	else:
 		GlobalLogger.warning("未查询到" + path + "请求的数据", "存档")
 		return null
-		
-func get_slot_meta(n: int) -> MetaRes:
-	var path = "user://save%d_meta.tres" % n
-	if ResourceLoader.exists(path):
-		return load(path) as MetaRes
-	return null
 	
 #endregion
 
