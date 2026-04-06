@@ -5,12 +5,9 @@ extends Control
 
 const MAX_SLOTS = 4
 
-#func _ready():
-	#await self.ready
-	#for i in range(1, MAX_SLOTS+1):
-		#var meta = GlobalSave.get_slot_meta(i)
-		#var card = slot_card.instantiate()
-		#
-		##await card.ready
-		#card.setup(i, meta)
-		#slots_container.add_child(card)
+func _ready():
+	var cards: Array = slots_container.get_children()
+	for i in len(cards):
+		var meta: MetaRes = GlobalSave.get_slot_meta(i+1)
+		var card: SlotCard = cards[i]
+		card.setup(i+1, meta)

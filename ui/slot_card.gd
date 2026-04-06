@@ -1,4 +1,5 @@
 extends Control
+class_name SlotCard
 
 @onready var title: Label = $VBoxContainer/Title
 @onready var score: Label = $VBoxContainer/Score
@@ -11,12 +12,10 @@ var selected: bool = false
 signal slot_selected(slot_id: int)
 #signal new_game_requested(slot_id: int)
 
-func _ready() -> void:
-	setup(1, GlobalSave.get_slot_meta(1))
+#func _ready() -> void:
+	#setup(1, GlobalSave.get_slot_meta(1))
 
 func setup(slot_id: int, meta: MetaRes):
-	await self.ready
-	
 	slot = slot_id
 	title.text = tr("KEY_SLOT") + str(slot_id)
 	if meta:

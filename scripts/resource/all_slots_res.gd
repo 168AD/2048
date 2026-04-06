@@ -8,7 +8,7 @@ func get_slot_meta(slot: int) -> MetaRes:
 		if s.slot == slot:
 			return s
 	
-	return MetaRes.new()
+	return null
 	
 func update_slot(slot: int, save_res: SaveRes):
 	var slot_meta = get_slot_meta(slot)
