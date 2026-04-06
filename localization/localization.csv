@@ -1,8 +1,8 @@
 ﻿,zh_CN,zh_TW,en,ja
-Score,分数,分數,Points,得点
-Highest,最高分,最高分,Best,ベスト
-NewGame,新游戏,新遊戲,New,はじめから
-Language,简中,繁中,English,日本語
+KEY_SCORE,分数,分數,Points,得点
+KEY_HIGHEST,最高分,最高分,Best,ベスト
+KEY_NEW,新游戏,新遊戲,New,はじめから
+KEY_LANG,简中,繁中,English,日本語
 KEY_START,开始,開始,Start,開始
 KEY_SETTINGS,设置,設置,Settings,設定
 KEY_EXIT,退出,退出,Exit,退出

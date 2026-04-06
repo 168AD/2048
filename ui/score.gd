@@ -20,10 +20,10 @@ func load_res(_res: GameRes) -> void:
 	score_res.load_initial()
 
 func score_display_updated(x: int) -> void:
-	score_display.text = tr("Score") + "：%d" % x
+	score_display.text = tr("KEY_SCORE") + "：%d" % x
 	
 func highest_display_updated(x: int) -> void:
-	highest_display.text = tr("Highest") + "：%d" % x
+	highest_display.text = tr("KEY_HIGHEST") + "：%d" % x
 
 func score_update(x: int):
 	score_res.score_update(x)

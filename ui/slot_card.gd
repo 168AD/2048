@@ -20,12 +20,12 @@ func setup(slot_id: int, meta: MetaRes):
 	slot = slot_id
 	title.text = tr("KEY_SLOT") + str(slot_id)
 	if meta:
-		score.text = tr("Score") + ": %d" % meta.score
-		highest.text = tr("Highest") + ": %d" % meta.highest
+		score.text = tr("KEY_SCORE") + ": %d" % meta.score
+		highest.text = tr("KEY_HIGHEST") + ": %d" % meta.highest
 		time_stamp.text = tr("KEY_TIME") + ": %s" % meta.time_stamp
 	else:
-		score.text = tr("Score") + ": --"
-		highest.text = tr("Highest") + ": --"
+		score.text = tr("KEY_SCORE") + ": --"
+		highest.text = tr("KEY_HIGHEST") + ": --"
 		time_stamp.text = tr("KEY_TIME") + ": --"
 	
 	gui_input.connect(_on_gui_requested)
