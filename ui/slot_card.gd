@@ -1,10 +1,10 @@
 extends Control
 class_name SlotCard
 
-@onready var title: Label = $VBoxContainer/Title
-@onready var score: Label = $VBoxContainer/Score
-@onready var highest: Label = $VBoxContainer/Highest
-@onready var time_stamp: Label = $VBoxContainer/TimeStamp
+@onready var title: Label = $HBoxContainer/Title
+@onready var score: Label = $HBoxContainer/Score
+@onready var highest: Label = $HBoxContainer/Highest
+@onready var time_stamp: Label = $HBoxContainer/TimeStamp
 
 var slot: int
 var selected: bool = false

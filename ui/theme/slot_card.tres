@@ -1,0 +1,13 @@
+[gd_resource type="Theme" format=3 uid="uid://dove2f50wkrcb"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xh2ra"]
+bg_color = Color(0.38039216, 0.23921569, 0.75686276, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_size = 4
+shadow_offset = Vector2(0, 2)
+
+[resource]
+Panel/styles/panel = SubResource("StyleBoxFlat_xh2ra")

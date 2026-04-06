@@ -1,18 +1,7 @@
 [gd_scene format=3 uid="uid://di3fxvkymxcn0"]
 
 [ext_resource type="Script" uid="uid://b471ew2kq8ciu" path="res://ui/slot_card.gd" id="1_a8e8k"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xh2ra"]
-bg_color = Color(0.38039216, 0.23921569, 0.75686276, 1)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
-shadow_size = 4
-shadow_offset = Vector2(0, 2)
-
-[sub_resource type="Theme" id="Theme_xh2ra"]
-Panel/styles/panel = SubResource("StyleBoxFlat_xh2ra")
+[ext_resource type="Theme" uid="uid://dove2f50wkrcb" path="res://ui/theme/slot_card.tres" id="1_v4u2b"]
 
 [node name="SlotCard" type="Control" unique_id=2044918011]
 layout_mode = 3
@@ -21,7 +10,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = SubResource("Theme_xh2ra")
+theme = ExtResource("1_v4u2b")
 script = ExtResource("1_a8e8k")
 
 [node name="BackGround" type="Panel" parent="." unique_id=879611727]
@@ -32,7 +21,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="HBoxContainer" parent="." unique_id=1562197263]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1562197263]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.05
@@ -43,28 +32,28 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 16
 
-[node name="Title" type="Label" parent="VBoxContainer" unique_id=1661445324]
+[node name="Title" type="Label" parent="HBoxContainer" unique_id=1661445324]
 custom_minimum_size = Vector2(128, 64)
 layout_mode = 2
 size_flags_horizontal = 0
 theme_override_font_sizes/font_size = 16
 vertical_alignment = 1
 
-[node name="Score" type="Label" parent="VBoxContainer" unique_id=864418310]
+[node name="Score" type="Label" parent="HBoxContainer" unique_id=864418310]
 custom_minimum_size = Vector2(128, 64)
 layout_mode = 2
 size_flags_horizontal = 0
 theme_override_font_sizes/font_size = 16
 vertical_alignment = 1
 
-[node name="Highest" type="Label" parent="VBoxContainer" unique_id=2144823624]
+[node name="Highest" type="Label" parent="HBoxContainer" unique_id=2144823624]
 custom_minimum_size = Vector2(128, 64)
 layout_mode = 2
 size_flags_horizontal = 0
 theme_override_font_sizes/font_size = 16
 vertical_alignment = 1
 
-[node name="TimeStamp" type="Label" parent="VBoxContainer" unique_id=1537058592]
+[node name="TimeStamp" type="Label" parent="HBoxContainer" unique_id=1537058592]
 custom_minimum_size = Vector2(128, 64)
 layout_mode = 2
 size_flags_horizontal = 0
