@@ -2,11 +2,14 @@
 
 [ext_resource type="Script" uid="uid://ua3dq4ds77ck" path="res://scenes/entry.gd" id="1_ycj4g"]
 
-[node name="Entry" type="Node2D" unique_id=1393207210]
+[node name="Entry" type="Control" unique_id=1235377205]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_ycj4g")
 
 [node name="Label" type="Label" parent="." unique_id=629263440]
 visible = false
+layout_mode = 0
 offset_right = 128.0
 offset_bottom = 128.0
 theme_override_font_sizes/font_size = 64

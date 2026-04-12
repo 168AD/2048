@@ -1,4 +1,4 @@
-extends Node2D
+extends Control
 class_name Entry
 
 @export var value: int = 0:
