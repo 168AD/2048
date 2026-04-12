@@ -1,6 +1,34 @@
 extends Control
 class_name SlotCard
 
+
+@export_category("Scene Manager Options")
+
+@export var scene: String
+
+@export_group("Fade Out Options")
+@export var fade_out_speed: float = 1.0
+@export var fade_out_pattern: String = "fade"
+@export var fade_out_inverted: bool = false
+@export_range(0.0, 1.0, 0.1) var fade_out_smoothness = 0.1
+
+@export_group("Fade In Options")
+@export var fade_in_speed: float = 1.0
+@export var fade_in_pattern: String = "fade"
+@export var fade_in_inverted: bool = false
+@export_range(0.0, 1.0, 0.1) var fade_in_smoothness = 0.1
+
+@export_group("General Options")
+@export var color: Color = Color(0, 0, 0)
+@export var timeout: float = 1.0
+@export var clickable: bool = false
+@export var add_to_back: bool = true
+
+
+@onready var fade_out_options = SceneManager.create_options(fade_out_speed, fade_out_pattern, fade_out_smoothness, fade_out_inverted)
+@onready var fade_in_options = SceneManager.create_options(fade_in_speed, fade_in_pattern, fade_in_smoothness, fade_in_inverted)
+@onready var general_options = SceneManager.create_general_options(color, timeout, clickable, add_to_back)
+
 @onready var title: Label = $HBoxContainer/Title
 @onready var score: Label = $HBoxContainer/Score
 @onready var highest: Label = $HBoxContainer/Highest
@@ -37,5 +65,5 @@ func _on_gui_requested(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		selected = true
 		slot_selected.emit(slot)
-		get_tree().change_scene_to_file("res://scenes/board.tscn")
+		SceneManager.change_scene(scene, fade_out_options, fade_in_options, general_options)
 		GlobalLogger.info("选择存档%d" % slot, "存档选择")

@@ -12,6 +12,10 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_v4u2b")
 script = ExtResource("1_a8e8k")
+scene = "board"
+fade_out_pattern = "squares"
+fade_out_inverted = true
+fade_in_pattern = "squares"
 
 [node name="BackGround" type="Panel" parent="." unique_id=879611727]
 layout_mode = 1

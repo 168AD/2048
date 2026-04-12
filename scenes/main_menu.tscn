@@ -2,7 +2,8 @@
 
 [ext_resource type="Theme" uid="uid://c01r0bseo4o7a" path="res://ui/theme/main_menu.tres" id="1_0dkrt"]
 [ext_resource type="PackedScene" uid="uid://rrcu5xax8xb0" path="res://ui/slot_slection.tscn" id="3_wk0pr"]
-[ext_resource type="Script" uid="uid://oejiripf31c5" path="res://ui/main_menu.gd" id="4_8uxxo"]
+[ext_resource type="Script" uid="uid://kxm7xy0usrp2" path="res://addons/scene_manager/button.gd" id="3_wu84c"]
+[ext_resource type="Script" uid="uid://oejiripf31c5" path="res://scenes/main_menu.gd" id="4_8uxxo"]
 
 [sub_resource type="Animation" id="Animation_wk0pr"]
 length = 0.001
@@ -97,6 +98,9 @@ text = "KEY_SETTINGS"
 [node name="Exit" type="Button" parent="VBoxContainer" unique_id=392717191]
 layout_mode = 2
 text = "KEY_EXIT"
+script = ExtResource("3_wu84c")
+scene = "exit"
+fade_out_speed = 0.5
 
 [node name="SlotSlection" parent="." unique_id=1381006384 instance=ExtResource("3_wk0pr")]
 layout_mode = 1
@@ -106,5 +110,5 @@ offset_bottom = 719.99963
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=340998262]
 libraries/ = SubResource("AnimationLibrary_8uxxo")
 
-[connection signal="pressed" from="VBoxContainer/Start" to="." method="_on_start_pressed"]
-[connection signal="pressed" from="VBoxContainer/Exit" to="." method="_on_exit_pressed"]
+[connection signal="button_up" from="VBoxContainer/Start" to="." method="_on_start_pressed"]
+[connection signal="button_up" from="VBoxContainer/Exit" to="VBoxContainer/Exit" method="_on_button_button_up"]

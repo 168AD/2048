@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://c1odj85xmn7bg" path="res://manager/input_manager.tscn" id="3_dxjtj"]
 [ext_resource type="PackedScene" uid="uid://b6byxtfr81cti" path="res://ui/score.tscn" id="4_dun80"]
 [ext_resource type="Script" uid="uid://cpjjlyd1yy1lf" path="res://scripts/localization.gd" id="6_dun80"]
+[ext_resource type="Script" uid="uid://kxm7xy0usrp2" path="res://addons/scene_manager/button.gd" id="7_c3r7o"]
 
 [sub_resource type="Resource" id="Resource_dun80"]
 script = ExtResource("2_dxjtj")
@@ -40,4 +41,31 @@ theme_override_font_sizes/font_size = 36
 text = "KEY_LANG"
 script = ExtResource("6_dun80")
 
+[node name="BackToMain" type="Button" parent="." unique_id=1361407609]
+offset_left = 15.0
+offset_top = 314.0
+offset_right = 203.0
+offset_bottom = 372.0
+theme_override_font_sizes/font_size = 36
+text = "KEY_BACK"
+script = ExtResource("7_c3r7o")
+scene = "main"
+fade_out_pattern = "squares"
+fade_out_inverted = true
+fade_in_pattern = "squares"
+color = Color(1, 0.11372549, 0.56078434, 0.34509805)
+
+[node name="Exit" type="Button" parent="." unique_id=313722971]
+offset_left = 15.0
+offset_top = 391.0
+offset_right = 203.0
+offset_bottom = 449.0
+theme_override_font_sizes/font_size = 36
+text = "KEY_EXIT"
+script = ExtResource("7_c3r7o")
+scene = "exit"
+fade_out_inverted = true
+
 [connection signal="pressed" from="Localization" to="Localization" method="_on_pressed"]
+[connection signal="button_up" from="BackToMain" to="BackToMain" method="_on_button_button_up"]
+[connection signal="button_up" from="Exit" to="Exit" method="_on_button_button_up"]
