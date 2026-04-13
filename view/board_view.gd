@@ -13,8 +13,8 @@ const MOVE_DURATION := 0.1
 
 var row = 4
 var column = 4
-var x_start = 224.0
-var y_start = 14.0
+var x_start = 224.0 + 64.0
+var y_start = 14.0 + 64.0
 var offset = 128.0
 	
 func grid_initial(board: Array):

@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://c8dmix5byafbx"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mowoh"]
+bg_color = Color(0.9137255, 0.83137256, 0.67058825, 1)
+
+[sub_resource type="Theme" id="Theme_t5fjg"]
+Panel/styles/panel = SubResource("StyleBoxFlat_mowoh")
+
+[node name="Grid" type="Control" unique_id=738026888]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_t5fjg")
+
+[node name="Panel" type="Panel" parent="." unique_id=1527364350]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 124.0
+offset_bottom = 124.0
