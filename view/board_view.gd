@@ -7,14 +7,16 @@ signal animation_finished
 @export var entries = {}
 @export var direction: String
 
+@onready var grid: Control = $Panel/GridContainer/Grid
+@onready var x_start = grid.position.x -128.0 * 1.5
+@onready var y_start = grid.position.y - 128.0 * 1.5
+
 var is_animating := false
 
 const MOVE_DURATION := 0.1
 
 var row = 4
 var column = 4
-var x_start = 224.0 + 64.0
-var y_start = 14.0 + 64.0
 var offset = 128.0
 	
 func grid_initial(board: Array):

@@ -2,13 +2,25 @@
 
 [ext_resource type="Script" uid="uid://cthsu0rk51pb5" path="res://ui/score.gd" id="1_7b0px"]
 
-[node name="Score" type="Node2D" unique_id=448192639]
+[node name="Score" type="Control" unique_id=1838017945]
+physics_interpolation_mode = 0
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_7b0px")
 metadata/_custom_type_script = "uid://c6kcuba4rdprq"
 
 [node name="Container" type="VBoxContainer" parent="." unique_id=1747697053]
-offset_right = 158.0
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -165.0
 offset_bottom = 158.0
+grow_horizontal = 0
 
 [node name="ScoreDisplay" type="Label" parent="Container" unique_id=1577358121]
 layout_mode = 2

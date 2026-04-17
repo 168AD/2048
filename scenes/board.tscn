@@ -12,19 +12,29 @@
 script = ExtResource("2_dxjtj")
 metadata/_custom_type_script = "uid://dpqhm8jkfyhf4"
 
-[node name="Board" type="Node2D" unique_id=1657789931]
+[node name="Board" type="Control" unique_id=1946841828]
+physics_interpolation_mode = 0
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_bw3vb")
 board_res = SubResource("Resource_dun80")
 metadata/_custom_type_script = "uid://c6kcuba4rdprq"
 
 [node name="BoardView" parent="." unique_id=388317679 instance=ExtResource("2_fv4ni")]
-metadata/_edit_use_anchors_ = true
+layout_mode = 1
 
 [node name="InputManager" parent="." unique_id=503755794 instance=ExtResource("3_dxjtj")]
 
 [node name="Score" parent="." unique_id=448192639 instance=ExtResource("4_dun80")]
+layout_mode = 1
+anchors_preset = -1
 
 [node name="NewGame" type="Button" parent="." unique_id=769175292]
+layout_mode = 0
 offset_left = 15.0
 offset_top = 148.0
 offset_right = 203.0
@@ -33,6 +43,7 @@ theme_override_font_sizes/font_size = 36
 text = "KEY_NEW"
 
 [node name="Localization" type="Button" parent="." unique_id=365967187]
+layout_mode = 0
 offset_left = 16.0
 offset_top = 234.0
 offset_right = 204.0
@@ -42,6 +53,7 @@ text = "KEY_LANG"
 script = ExtResource("6_dun80")
 
 [node name="BackToMain" type="Button" parent="." unique_id=1361407609]
+layout_mode = 0
 offset_left = 15.0
 offset_top = 314.0
 offset_right = 203.0
@@ -57,6 +69,7 @@ color = Color(0.5294118, 0.60784316, 0.92156863, 1)
 timeout = 0.5
 
 [node name="Exit" type="Button" parent="." unique_id=313722971]
+layout_mode = 0
 offset_left = 15.0
 offset_top = 391.0
 offset_right = 203.0
