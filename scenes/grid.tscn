@@ -2,6 +2,10 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mowoh"]
 bg_color = Color(0.9137255, 0.83137256, 0.67058825, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [sub_resource type="Theme" id="Theme_t5fjg"]
 Panel/styles/panel = SubResource("StyleBoxFlat_mowoh")

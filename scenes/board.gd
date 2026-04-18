@@ -1,10 +1,9 @@
 extends Persist
 
-@onready var board_view: BoardView = $BoardView
+@onready var board_view: BoardView = $HBox/BoardView
 @onready var input_manager: InputManager = $InputManager
-@onready var score: Score = $Score
-@onready var new_game: Button = $NewGame
-@onready var localization: Button = $Localization
+@onready var score: Score = $HBox/VBox/Score
+@onready var new_game: Button = $HBox/VBox/NewGame
 
 @export var board_res: BoardRes
 
@@ -39,6 +38,7 @@ func _on_move_requested(direction: String):
 	board_res.move(direction)
 	
 func _on_new_game_requested():
+	#await SceneManager.fade_out_started
 	pending_directions.clear()
 	if board_view.is_animating:
 		await board_view.animation_finished
@@ -68,9 +68,9 @@ func _connect_signals():
 	if not board_res.game_over.is_connected(game_over):
 		board_res.game_over.connect(game_over)
 	
-	new_game.pressed.connect(_on_new_game_requested)
+	new_game.button_up.connect(_on_new_game_requested)
 	
-	localization.language_update.connect(score.language_update)
+	#localization.language_update.connect(score.language_update)
 	
 	board_view.animation_finished.connect(_on_animation_finished)
 	

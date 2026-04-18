@@ -5,7 +5,7 @@ class_name SaveManager
 
 @export var save_resource: SaveRes
 @export var saves_meta: AllSlotsRes
-@export var version: String = "0.1"
+@export var version: String = "0.1.260418"
 @export var slot: int = 1
 
 const SAVE_PATH: String = "user://sav%d.tres"
@@ -167,6 +167,10 @@ func _version_migrate(resource: SaveRes) -> SaveRes:
 			"0.1":
 				if resource.has_meta("time_tamp"):
 					resource.time_stamp = resource.time_tamp
+				var score_res : ScoreRes = resource.save_dict.get("/root/Board/Score")
+				if score_res:
+					resource.save_dict["/root/Board/HBox/VBox/Score"] = score_res
+				resource.version = "0.1.260418"
 				
 				
 	return resource

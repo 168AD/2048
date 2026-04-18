@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://b6byxtfr81cti"]
 
 [ext_resource type="Script" uid="uid://cthsu0rk51pb5" path="res://ui/score.gd" id="1_7b0px"]
+[ext_resource type="Theme" uid="uid://dw3ad35vi7oqh" path="res://ui/theme/slot_selection.tres" id="2_phtbq"]
 
 [node name="Score" type="Control" unique_id=1838017945]
 physics_interpolation_mode = 0
@@ -13,21 +14,30 @@ grow_vertical = 2
 script = ExtResource("1_7b0px")
 metadata/_custom_type_script = "uid://c6kcuba4rdprq"
 
+[node name="Panel" type="Panel" parent="." unique_id=178663046]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_phtbq")
+
 [node name="Container" type="VBoxContainer" parent="." unique_id=1747697053]
 layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -165.0
+offset_right = 165.0
 offset_bottom = 158.0
-grow_horizontal = 0
 
 [node name="ScoreDisplay" type="Label" parent="Container" unique_id=1577358121]
 layout_mode = 2
+theme_override_constants/outline_size = 4
+theme_override_constants/shadow_outline_size = 4
 theme_override_font_sizes/font_size = 36
 text = "分数：0"
 
 [node name="HighestDisplay" type="Label" parent="Container" unique_id=1240244964]
 layout_mode = 2
+theme_override_constants/outline_size = 4
+theme_override_constants/shadow_outline_size = 4
 theme_override_font_sizes/font_size = 36
 text = "最高分：0"

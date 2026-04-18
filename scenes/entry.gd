@@ -20,6 +20,11 @@ func update_background_color() -> void:
 	var stylebox = StyleBoxFlat.new()
 	stylebox.bg_color = color
 	stylebox.set_corner_radius_all(8)
+	stylebox.border_color = Color(1,1,1)
+	stylebox.border_width_bottom = 1.0
+	stylebox.border_width_left = 1.0
+	stylebox.border_width_right = 1.0
+	stylebox.border_width_top = 1.0
 	background_panel.add_theme_stylebox_override("panel", stylebox)
 
 func update_font_size() -> void:

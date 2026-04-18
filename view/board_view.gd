@@ -7,7 +7,7 @@ signal animation_finished
 @export var entries = {}
 @export var direction: String
 
-@onready var grid: Control = $Panel/GridContainer/Grid
+@onready var grid: Control = $GridContainer/Grid
 @onready var x_start = grid.position.x -128.0 * 1.5
 @onready var y_start = grid.position.y - 128.0 * 1.5
 

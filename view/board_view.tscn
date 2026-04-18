@@ -5,7 +5,11 @@
 [ext_resource type="PackedScene" uid="uid://c8dmix5byafbx" path="res://scenes/grid.tscn" id="3_ueqtr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e7v5y"]
-bg_color = Color(0.632532, 0.63546985, 0.6384077, 0.78431374)
+bg_color = Color(0.6313726, 0.63529414, 0.6392157, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [sub_resource type="Theme" id="Theme_ueqtr"]
 Panel/styles/panel = SubResource("StyleBoxFlat_e7v5y")
@@ -30,68 +34,72 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -256.0
-offset_top = -256.0
-offset_right = 256.0
-offset_bottom = 256.0
+offset_left = -261.0
+offset_top = -261.0
+offset_right = 261.0
+offset_bottom = 261.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="GridContainer" type="GridContainer" parent="Panel" unique_id=1210653027]
+[node name="GridContainer" type="GridContainer" parent="." unique_id=1210653027]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -256.0
+offset_top = -256.0
+offset_right = 128.0
+offset_bottom = 128.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/h_separation = 128
 theme_override_constants/v_separation = 128
 columns = 4
 
-[node name="Grid" parent="Panel/GridContainer" unique_id=738026888 instance=ExtResource("3_ueqtr")]
+[node name="Grid" parent="GridContainer" unique_id=738026888 instance=ExtResource("3_ueqtr")]
 layout_mode = 2
 
-[node name="Grid2" parent="Panel/GridContainer" unique_id=1397179184 instance=ExtResource("3_ueqtr")]
+[node name="Grid2" parent="GridContainer" unique_id=1397179184 instance=ExtResource("3_ueqtr")]
 layout_mode = 2
 
-[node name="Grid3" parent="Panel/GridContainer" unique_id=1895795915 instance=ExtResource("3_ueqtr")]
+[node name="Grid3" parent="GridContainer" unique_id=1895795915 instance=ExtResource("3_ueqtr")]
 layout_mode = 2
 
-[node name="Grid4" parent="Panel/GridContainer" unique_id=414936209 instance=ExtResource("3_ueqtr")]
+[node name="Grid4" parent="GridContainer" unique_id=414936209 instance=ExtResource("3_ueqtr")]
 layout_mode = 2
 
-[node name="Grid5" parent="Panel/GridContainer" unique_id=1778518158 instance=ExtResource("3_ueqtr")]
+[node name="Grid5" parent="GridContainer" unique_id=1778518158 instance=ExtResource("3_ueqtr")]
 layout_mode = 2
 
-[node name="Grid6" parent="Panel/GridContainer" unique_id=2114139160 instance=ExtResource("3_ueqtr")]
+[node name="Grid6" parent="GridContainer" unique_id=2114139160 instance=ExtResource("3_ueqtr")]
 layout_mode = 2
 
-[node name="Grid7" parent="Panel/GridContainer" unique_id=767930093 instance=ExtResource("3_ueqtr")]
+[node name="Grid7" parent="GridContainer" unique_id=767930093 instance=ExtResource("3_ueqtr")]
 layout_mode = 2
 
-[node name="Grid8" parent="Panel/GridContainer" unique_id=2144684654 instance=ExtResource("3_ueqtr")]
+[node name="Grid8" parent="GridContainer" unique_id=2144684654 instance=ExtResource("3_ueqtr")]
 layout_mode = 2
 
-[node name="Grid9" parent="Panel/GridContainer" unique_id=1106146631 instance=ExtResource("3_ueqtr")]
+[node name="Grid9" parent="GridContainer" unique_id=1106146631 instance=ExtResource("3_ueqtr")]
 layout_mode = 2
 
-[node name="Grid10" parent="Panel/GridContainer" unique_id=31928170 instance=ExtResource("3_ueqtr")]
+[node name="Grid10" parent="GridContainer" unique_id=31928170 instance=ExtResource("3_ueqtr")]
 layout_mode = 2
 
-[node name="Grid11" parent="Panel/GridContainer" unique_id=632823260 instance=ExtResource("3_ueqtr")]
+[node name="Grid11" parent="GridContainer" unique_id=632823260 instance=ExtResource("3_ueqtr")]
 layout_mode = 2
 
-[node name="Grid12" parent="Panel/GridContainer" unique_id=993723375 instance=ExtResource("3_ueqtr")]
+[node name="Grid12" parent="GridContainer" unique_id=993723375 instance=ExtResource("3_ueqtr")]
 layout_mode = 2
 
-[node name="Grid13" parent="Panel/GridContainer" unique_id=1535731854 instance=ExtResource("3_ueqtr")]
+[node name="Grid13" parent="GridContainer" unique_id=1535731854 instance=ExtResource("3_ueqtr")]
 layout_mode = 2
 
-[node name="Grid14" parent="Panel/GridContainer" unique_id=1979819021 instance=ExtResource("3_ueqtr")]
+[node name="Grid14" parent="GridContainer" unique_id=1979819021 instance=ExtResource("3_ueqtr")]
 layout_mode = 2
 
-[node name="Grid15" parent="Panel/GridContainer" unique_id=277946437 instance=ExtResource("3_ueqtr")]
+[node name="Grid15" parent="GridContainer" unique_id=277946437 instance=ExtResource("3_ueqtr")]
 layout_mode = 2
 
-[node name="Grid16" parent="Panel/GridContainer" unique_id=2123513496 instance=ExtResource("3_ueqtr")]
+[node name="Grid16" parent="GridContainer" unique_id=2123513496 instance=ExtResource("3_ueqtr")]
 layout_mode = 2
