@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cje26ep4g86pr"]
 
 [ext_resource type="Script" uid="uid://dq6hlojvmkgse" path="res://scenes/board.gd" id="1_bw3vb"]
-[ext_resource type="Theme" uid="uid://c01r0bseo4o7a" path="res://ui/theme/main_menu.tres" id="1_c3r7o"]
+[ext_resource type="Theme" uid="uid://byasdttvroiks" path="res://ui/theme/board.tres" id="1_c3r7o"]
 [ext_resource type="Script" uid="uid://dpqhm8jkfyhf4" path="res://scripts/resource/board_res.gd" id="2_dxjtj"]
 [ext_resource type="PackedScene" uid="uid://ciq5x71kcgfg6" path="res://view/board_view.tscn" id="2_fv4ni"]
 [ext_resource type="PackedScene" uid="uid://c1odj85xmn7bg" path="res://manager/input_manager.tscn" id="3_dxjtj"]
@@ -38,9 +38,9 @@ grow_vertical = 2
 [node name="HBox" type="HBoxContainer" parent="." unique_id=1230247942]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.425
+anchor_left = 0.35
 anchor_top = 0.025
-anchor_right = 0.95
+anchor_right = 0.9
 anchor_bottom = 0.975
 offset_right = 4.0
 theme_override_constants/separation = 269
@@ -48,7 +48,7 @@ metadata/_edit_use_anchors_ = true
 
 [node name="BoardView" parent="HBox" unique_id=388317679 instance=ExtResource("2_fv4ni")]
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_horizontal = 0
 size_flags_vertical = 4
 
 [node name="VBox" type="VBoxContainer" parent="HBox" unique_id=1643239487]
@@ -65,6 +65,8 @@ size_flags_vertical = 0
 
 [node name="NewGame" type="Button" parent="HBox/VBox" unique_id=769175292]
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 36
 text = "KEY_NEW"
 script = ExtResource("7_c3r7o")
@@ -78,6 +80,8 @@ color = Color(0.15686275, 0.5137255, 0.6901961, 1)
 
 [node name="BackToMain" type="Button" parent="HBox/VBox" unique_id=1361407609]
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 36
 text = "KEY_BACK"
 script = ExtResource("7_c3r7o")
@@ -90,6 +94,8 @@ timeout = 0.5
 
 [node name="Exit" type="Button" parent="HBox/VBox" unique_id=313722971]
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 36
 text = "KEY_EXIT"
 script = ExtResource("7_c3r7o")

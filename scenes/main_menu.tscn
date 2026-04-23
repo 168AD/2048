@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bp0dwmix73qb7"]
 
-[ext_resource type="Theme" uid="uid://c01r0bseo4o7a" path="res://ui/theme/main_menu.tres" id="1_0dkrt"]
+[ext_resource type="Theme" uid="uid://byasdttvroiks" path="res://ui/theme/board.tres" id="1_wu84c"]
 [ext_resource type="PackedScene" uid="uid://rrcu5xax8xb0" path="res://ui/slot_slection.tscn" id="3_wk0pr"]
 [ext_resource type="Script" uid="uid://kxm7xy0usrp2" path="res://addons/scene_manager/button.gd" id="3_wu84c"]
 [ext_resource type="Script" uid="uid://oejiripf31c5" path="res://scenes/main_menu.gd" id="4_8uxxo"]
@@ -49,7 +49,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_0dkrt")
+theme = ExtResource("1_wu84c")
 script = ExtResource("4_8uxxo")
 
 [node name="BackGround" type="Panel" parent="." unique_id=89762139]
@@ -90,14 +90,20 @@ theme_override_constants/separation = 16
 
 [node name="Start" type="Button" parent="VBoxContainer" unique_id=300382941]
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
 text = "KEY_START"
 
 [node name="Settings" type="Button" parent="VBoxContainer" unique_id=342247541]
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
 text = "KEY_SETTINGS"
 
 [node name="Exit" type="Button" parent="VBoxContainer" unique_id=392717191]
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
 text = "KEY_EXIT"
 script = ExtResource("3_wu84c")
 scene = "exit"
