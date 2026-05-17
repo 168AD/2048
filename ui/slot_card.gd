@@ -33,6 +33,7 @@ class_name SlotCard
 @onready var score: Label = $HBoxContainer/Score
 @onready var highest: Label = $HBoxContainer/Highest
 @onready var time_stamp: Label = $HBoxContainer/TimeStamp
+@onready var button: Button = $Button
 
 var slot: int
 var selected: bool = false
@@ -58,12 +59,22 @@ func setup(slot_id: int, meta: MetaRes):
 	gui_input.connect(_on_gui_requested)
 	slot_selected.connect(GlobalSave.load_data)
 
+func slot_on():
+	button.grab_focus()
+
 func _on_gui_requested(event):
 	if selected:
 		return
 		
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		selected = true
-		slot_selected.emit(slot)
-		SceneManager.change_scene(scene, fade_out_options, fade_in_options, general_options)
-		GlobalLogger.info("选择存档%d" % slot, "存档选择")
+		load_slot()
+		
+func load_slot():
+	if selected:
+		return
+		
+	#if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+	selected = true
+	slot_selected.emit(slot)
+	SceneManager.change_scene(scene, fade_out_options, fade_in_options, general_options)
+	GlobalLogger.info("选择存档%d" % slot, "存档选择")
