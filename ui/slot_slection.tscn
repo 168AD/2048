@@ -46,15 +46,31 @@ theme_override_constants/separation = 12
 [node name="SlotCard1" parent="VBoxContainer" unique_id=2044918011 instance=ExtResource("2_thyov")]
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
+focus_neighbor_top = NodePath("../SlotCard4")
+focus_neighbor_bottom = NodePath("../SlotCard2")
+focus_next = NodePath("../SlotCard2")
+focus_previous = NodePath("../SlotCard4")
 
 [node name="SlotCard2" parent="VBoxContainer" unique_id=775723214 instance=ExtResource("2_thyov")]
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
+focus_neighbor_top = NodePath("../SlotCard1")
+focus_neighbor_bottom = NodePath("../SlotCard3")
+focus_next = NodePath("../SlotCard3")
+focus_previous = NodePath("../SlotCard1")
 
 [node name="SlotCard3" parent="VBoxContainer" unique_id=930160895 instance=ExtResource("2_thyov")]
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
+focus_neighbor_top = NodePath("../SlotCard2")
+focus_neighbor_bottom = NodePath("../SlotCard4")
+focus_next = NodePath("../SlotCard4")
+focus_previous = NodePath("../SlotCard2")
 
 [node name="SlotCard4" parent="VBoxContainer" unique_id=1718327625 instance=ExtResource("2_thyov")]
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
+focus_neighbor_top = NodePath("../SlotCard3")
+focus_neighbor_bottom = NodePath("../SlotCard1")
+focus_next = NodePath("../SlotCard1")
+focus_previous = NodePath("../SlotCard3")
